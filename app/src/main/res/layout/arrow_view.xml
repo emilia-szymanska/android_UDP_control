@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/proba"
+    android:id="@+id/arrow_view"
+    tools:context=".ArrowActivity">
+
+
+    <ImageButton
+        android:id="@+id/uparrow"
+        android:layout_marginTop="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/uparrow"
+        android:padding="15dp"
+        android:background="@drawable/btn_arrow"
+        android:scaleType="centerInside"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageButton
+        android:id="@+id/downarrow"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/uparrow"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/downarrow"
+        android:padding="15dp"
+        android:background="@drawable/btn_arrow"
+        android:scaleType="centerInside"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageButton
+        android:id="@+id/leftarrow"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="30dp"
+        android:background="@drawable/btn_arrow"
+        android:src="@drawable/leftarrow"
+        android:padding="15dp"
+        android:scaleType="centerInside"
+        />
+
+    <ImageButton
+        android:id="@+id/rightarrow"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft ="230dp"
+        android:background="@drawable/btn_arrow"
+        android:src="@drawable/rightarrow"
+        android:padding="15dp"
+        android:scaleType="centerInside"
+        />
+
+    <ImageButton
+        android:id="@+id/stop"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="130dp"
+        android:background="@drawable/btn_arrow"
+        android:src="@drawable/stop"
+        android:padding="15dp"
+        android:scaleType="centerInside"
+        />
+
+    <ImageButton
+        android:id="@+id/previous"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:background="@drawable/btn_arrow"
+        android:src="@drawable/back_btn"
+        android:padding="15dp"
+        android:scaleType="centerInside"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="550dp"
+        />
+
+</RelativeLayout>
