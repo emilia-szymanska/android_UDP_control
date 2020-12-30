@@ -18,7 +18,7 @@
         android:padding="15dp"
         android:background="@drawable/btn_arrow"
         android:scaleType="centerInside"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:id="@+id/downarrow"
@@ -30,7 +30,7 @@
         android:padding="15dp"
         android:background="@drawable/btn_arrow"
         android:scaleType="centerInside"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:id="@+id/leftarrow"
@@ -41,8 +41,7 @@
         android:background="@drawable/btn_arrow"
         android:src="@drawable/leftarrow"
         android:padding="15dp"
-        android:scaleType="centerInside"
-        />
+        android:scaleType="centerInside" />
 
     <ImageButton
         android:id="@+id/rightarrow"
@@ -53,8 +52,7 @@
         android:background="@drawable/btn_arrow"
         android:src="@drawable/rightarrow"
         android:padding="15dp"
-        android:scaleType="centerInside"
-        />
+        android:scaleType="centerInside" />
 
     <ImageButton
         android:id="@+id/stop"
@@ -65,8 +63,7 @@
         android:background="@drawable/btn_arrow"
         android:src="@drawable/stop"
         android:padding="15dp"
-        android:scaleType="centerInside"
-        />
+        android:scaleType="centerInside" />
 
     <ImageButton
         android:id="@+id/previous"
@@ -77,7 +74,6 @@
         android:padding="15dp"
         android:scaleType="centerInside"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="550dp"
-        />
+        android:layout_marginTop="550dp" />
 
 </RelativeLayout>

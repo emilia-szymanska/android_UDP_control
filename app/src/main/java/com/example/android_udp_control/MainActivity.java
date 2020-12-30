@@ -8,14 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.content.Intent;
 
 
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
     EditText editTextAddress, editTextPort;
     Button buttonConnect, buttonNext;
     TextView textViewState, textViewRx;
@@ -23,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
     UDPClient udpClientThread;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
@@ -35,22 +34,22 @@ public class MainActivity extends AppCompatActivity {
         buttonNext = (Button) findViewById(R.id.next);
         buttonConnect = (Button) findViewById(R.id.connect);
 
-        //    Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
-        //    Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
         buttonNext.setOnClickListener(buttonNextOnClickListener);
         buttonConnect.setOnClickListener(buttonConnectOnClickListener);
 
         udpClientHandler = new UdpClientHandler(this);
     }
+
     View.OnClickListener buttonNextOnClickListener =
-            new View.OnClickListener() {
+            new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View arg0)
+                {
                     Intent intent = new Intent(MainActivity.this, ArrowActivity.class);
                     startActivity(intent);
                 }
-            }
-            ;
+            };
 
     View.OnClickListener buttonConnectOnClickListener =
             new View.OnClickListener()
@@ -62,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
                             editTextAddress.getText().toString(),
                             Integer.parseInt(editTextPort.getText().toString()),
                             udpClientHandler);
-                    udpClientThread.run();
 
+                    udpClientThread.run();
                     buttonConnect.setEnabled(false);
+
                 }
-            }
-            ;
+            };
 
     private void updateState(String state)
     {
@@ -94,15 +93,18 @@ public class MainActivity extends AppCompatActivity {
         public static final int UPDATE_END = 2;
         private MainActivity parent;
 
-        public UdpClientHandler(MainActivity parent) {
+        public UdpClientHandler(MainActivity parent)
+        {
             super();
             this.parent = parent;
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
 
-            switch (msg.what){
+            switch (msg.what)
+            {
                 case UPDATE_STATE:
                     parent.updateState((String)msg.obj);
                     break;
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     super.handleMessage(msg);
             }
-
         }
     }
 }

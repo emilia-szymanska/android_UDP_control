@@ -1,14 +1,14 @@
 package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.widget.Button;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class ArrowActivity extends AppCompatActivity {
+public class ArrowActivity extends AppCompatActivity
+{
     private ImageButton up;
     private ImageButton down;
     private ImageButton left;
@@ -17,12 +17,12 @@ public class ArrowActivity extends AppCompatActivity {
     private ImageButton previous;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.arrow_view);
 
-        //up button is an image button from resorces/layout/activity_main with id= uparrow
         up = findViewById(R.id.uparrow);
         down = findViewById(R.id.downarrow);
         left = findViewById(R.id.leftarrow);
@@ -30,46 +30,62 @@ public class ArrowActivity extends AppCompatActivity {
         stop = findViewById(R.id.stop);
         previous = findViewById(R.id.previous);
 
-        //button listeners for up arrow
-        up.setOnClickListener(new View.OnClickListener() {
+
+        up.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Toast.makeText(ArrowActivity.this, "Up arrow pressed", Toast.LENGTH_SHORT).show();
             }
         });
 
-        //button listener for down arrow
-        down.setOnClickListener(new View.OnClickListener() {
+
+        down.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Toast.makeText(ArrowActivity.this, "Down arrow pressed", Toast.LENGTH_SHORT).show();
             }
         });
 
-        left.setOnClickListener(new View.OnClickListener() {
+
+        left.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Toast.makeText(ArrowActivity.this, "Left arrow pressed", Toast.LENGTH_SHORT).show();
             }
         });
 
-        right.setOnClickListener(new View.OnClickListener() {
+
+        right.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Toast.makeText(ArrowActivity.this, "Right arrow pressed", Toast.LENGTH_SHORT).show();
             }
         });
 
-        stop.setOnClickListener(new View.OnClickListener() {
+
+        stop.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Toast.makeText(ArrowActivity.this, "Stop pressed", Toast.LENGTH_SHORT).show();
             }
         });
 
-        previous.setOnClickListener(new View.OnClickListener() {
+
+        previous.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(intent);
             }

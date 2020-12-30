@@ -51,9 +51,7 @@ public class UDPClient extends Thread
         try
         {
             address = InetAddress.getByName(hostname);
-            sendState("ohh");
             socket = new DatagramSocket();
-            sendState("ahh");
 
             String msg = "Hejka";
             byte[] buf = msg.getBytes();
@@ -75,4 +73,9 @@ public class UDPClient extends Thread
             ex.printStackTrace();
         }
     }
+
+
+
+
+
 }
