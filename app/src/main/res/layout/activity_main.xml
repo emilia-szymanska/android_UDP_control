@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="dstAddress"
-            android:text="192.168.137.231" />
+            android:text="192.168." />
 
         <EditText
             android:id="@+id/port"
@@ -35,17 +35,11 @@
             android:hint="dstPort"
             android:text="20001" />
 
-        <Button
-            android:id="@+id/connect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Connect" />
-
         <TextView
             android:id="@+id/state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="un-initiated"
+            android:text="waiting for connection"
             android:textSize="20dp" />
 
         <TextView
@@ -53,6 +47,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Connect" />
+
+        <Button
+            android:id="@+id/retry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Retry connecting" />
+
 
         <Button
             android:id="@+id/next"

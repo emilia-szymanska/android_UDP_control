@@ -86,8 +86,8 @@ public class ArrowActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(ArrowActivity.this, MainActivity.class);
-                startActivity(intent);
+                Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
+                startActivity(changeToMain);
             }
         });
     }

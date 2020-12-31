@@ -1,38 +1,36 @@
 package com.example.android_udp_control;
 
-import android.os.Message;
-import android.widget.Toast;
 import java.io.*;
 import java.net.*;
-
-import android.os.Bundle;
 
 
 public class UDPClient
 {
-    String dstAddress;
-    int dstPort;
+    String hostname;
+    int port;
     DatagramSocket socket;
     InetAddress address;
 
-    public UDPClient(String addr, int port)
+    public UDPClient(String addr, int prt)
     {
         super();
-        dstAddress = addr;
-        dstPort = port;
+        hostname = addr;
+        port = prt;
     }
 
-    public boolean run()
+    // 1 - correct connection; 0 - wrong server, -1 - exception
+    public int init_connection()
     {
-        String hostname = dstAddress;
-        int port = dstPort;
+        String msg = "Hello UDP server";
+        String rxCorrectMsg = "OK";
+
+        //TODO: what to do if a port is incorrecct? - it doesn't catch an exception then
 
         try
         {
             address = InetAddress.getByName(hostname);
             socket = new DatagramSocket();
 
-            String msg = "Hejka";
             byte[] buf = msg.getBytes();
             DatagramPacket request = new DatagramPacket(buf, buf.length, address, port);
             socket.send(request);
@@ -43,17 +41,16 @@ public class UDPClient
 
             String rxMsg = new String(buffer, 0, response.getLength());
 
-            if (rxMsg.equals("ok"))
-                return true;
+            if (rxMsg.equals(rxCorrectMsg))
+                return 1;
             else
-                return false;
-
+                return 0;
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
-            System.out.println("Client error: " + ex.getMessage());
+            System.out.println("Caught an exception!");
             ex.printStackTrace();
-            return false;
+            return -1;
         }
     }
 
