@@ -6,45 +6,24 @@ import java.io.*;
 import java.net.*;
 
 import android.os.Bundle;
-/*
 
-import android.os.Message;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;*/
-
-public class UDPClient extends Thread
+public class UDPClient
 {
     String dstAddress;
     int dstPort;
     DatagramSocket socket;
     InetAddress address;
-    MainActivity.UdpClientHandler handler;
 
-    public UDPClient(String addr, int port, MainActivity.UdpClientHandler handler)
+    public UDPClient(String addr, int port)
     {
         super();
         dstAddress = addr;
         dstPort = port;
-        this.handler = handler;
     }
 
-    private void sendState(String state)
+    public boolean run()
     {
-        handler.sendMessage(
-                Message.obtain(handler,
-                        MainActivity.UdpClientHandler.UPDATE_STATE, state));
-    }
-
-    @Override
-    public void run()
-    {
-        sendState("connecting...");
-
         String hostname = dstAddress;
         int port = dstPort;
 
@@ -62,20 +41,20 @@ public class UDPClient extends Thread
             DatagramPacket response = new DatagramPacket(buffer, buffer.length);
             socket.receive(response);
 
-            String quote = new String(buffer, 0, response.getLength());
+            String rxMsg = new String(buffer, 0, response.getLength());
 
-            sendState(quote);
+            if (rxMsg.equals("ok"))
+                return true;
+            else
+                return false;
 
         }
         catch (IOException ex)
         {
             System.out.println("Client error: " + ex.getMessage());
             ex.printStackTrace();
+            return false;
         }
     }
-
-
-
-
 
 }
