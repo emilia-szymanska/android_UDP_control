@@ -47,11 +47,14 @@ public class ArrowActivity extends AppCompatActivity
                 {
                     case MotionEvent.ACTION_DOWN:
                         napis.setTextColor(Color.WHITE);
+                        System.out.println("Clicked");
                         return true;
 
                     case MotionEvent.ACTION_UP:
-                        napis.setTextColor(Color.BLACK);
+                        System.out.println("Unclicked");
+                        napis.setTextColor(Color.RED);
                         return true;
+
                 }
                 return false;
             }
