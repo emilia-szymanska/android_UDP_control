@@ -1,11 +1,16 @@
 package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintSet;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Color;
 
 public class ArrowActivity extends AppCompatActivity
 {
@@ -15,6 +20,7 @@ public class ArrowActivity extends AppCompatActivity
     private ImageButton right;
     private ImageButton stop;
     private ImageButton previous;
+    TextView napis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,6 +29,7 @@ public class ArrowActivity extends AppCompatActivity
         getSupportActionBar().hide();
         setContentView(R.layout.arrow_view);
 
+        napis = findViewById(R.id.napis);
         up = findViewById(R.id.uparrow);
         down = findViewById(R.id.downarrow);
         left = findViewById(R.id.leftarrow);
@@ -31,12 +38,22 @@ public class ArrowActivity extends AppCompatActivity
         previous = findViewById(R.id.previous);
 
 
-        up.setOnClickListener(new View.OnClickListener()
+        up.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
-            public void onClick(View v)
+            public boolean onTouch(View v, MotionEvent motionEvent)
             {
-                Toast.makeText(ArrowActivity.this, "Up arrow pressed", Toast.LENGTH_SHORT).show();
+                switch (motionEvent.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        napis.setTextColor(Color.WHITE);
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        napis.setTextColor(Color.BLACK);
+                        return true;
+                }
+                return false;
             }
         });
 

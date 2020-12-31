@@ -8,6 +8,14 @@
     android:id="@+id/arrow_view"
     tools:context=".ArrowActivity">
 
+    <TextView
+        android:id="@+id/napis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:autoLink="web"
+        android:text="Set the connection"
+        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/uparrow"
