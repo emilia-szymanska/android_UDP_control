@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity
     EditText editTextAddress, editTextPort;
     Button buttonConnect, buttonNext, buttonRetry;
     TextView textViewState, textViewRx;
-    UDPClient udpClient;
+    public static UDPClient udpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity
         buttonRetry = (Button) findViewById(R.id.retry);
         buttonConnect = (Button) findViewById(R.id.connect);
 
-        buttonNext.setEnabled(false);
+        // change it
+        buttonNext.setEnabled(true);
         buttonRetry.setEnabled(false);
 
         buttonNext.setOnClickListener(buttonNextOnClickListener);
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                     udpClient = new UDPClient(
                             editTextAddress.getText().toString(),
                             Integer.parseInt(editTextPort.getText().toString()));
-                    int state = udpClient.init_connection();
+                    int state = udpClient.initConnection();
                     buttonRetry.setEnabled(true);
                     if(state == 1)
                     {

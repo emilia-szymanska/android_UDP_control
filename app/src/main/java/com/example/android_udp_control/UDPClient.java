@@ -19,7 +19,7 @@ public class UDPClient
     }
 
     // 1 - correct connection; 0 - wrong server, -1 - exception
-    public int init_connection()
+    public int initConnection()
     {
         String msg = "Hello UDP server";
         String rxCorrectMsg = "OK";
@@ -51,6 +51,24 @@ public class UDPClient
             System.out.println("Caught an exception!");
             ex.printStackTrace();
             return -1;
+        }
+    }
+
+    public void sendCommand(String msg)
+    {
+        try
+        {
+            address = InetAddress.getByName(hostname);
+            socket = new DatagramSocket();
+
+            byte[] buf = msg.getBytes();
+            DatagramPacket request = new DatagramPacket(buf, buf.length, address, port);
+            socket.send(request);
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Caught an exception!");
+            ex.printStackTrace();
         }
     }
 

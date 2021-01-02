@@ -2,7 +2,6 @@ package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintSet;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -11,16 +10,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Color;
+import android.os.Handler;
 
 public class ArrowActivity extends AppCompatActivity
 {
-    private ImageButton up;
-    private ImageButton down;
-    private ImageButton left;
-    private ImageButton right;
-    private ImageButton stop;
-    private ImageButton previous;
+    private ImageButton up, down, left, right, stop, previous;
     TextView napis;
+    String message;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,6 +34,10 @@ public class ArrowActivity extends AppCompatActivity
         stop = findViewById(R.id.stop);
         previous = findViewById(R.id.previous);
 
+        handler = new Handler();
+        // Start the initial runnable task by posting through the handler
+        handler.post(periodicSend);
+        message = "NONE";
 
         up.setOnTouchListener(new View.OnTouchListener()
         {
@@ -46,19 +47,23 @@ public class ArrowActivity extends AppCompatActivity
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        napis.setTextColor(Color.WHITE);
+                        //MainActivity.udpClient.sendCommand("UP");
+                        message = "UP";
+
                         System.out.println("Clicked");
                         return true;
 
                     case MotionEvent.ACTION_UP:
+                        //MainActivity.udpClient.sendCommand("STOP UP");
+                        message = "NONE";
                         System.out.println("Unclicked");
-                        napis.setTextColor(Color.RED);
                         return true;
 
                 }
                 return false;
             }
         });
+
 
 
         down.setOnClickListener(new View.OnClickListener()
@@ -106,9 +111,25 @@ public class ArrowActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                handler.removeCallbacks(periodicSend);
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
             }
         });
     }
+
+    private Runnable periodicSend = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+
+            if (message.equals("UP"))
+                napis.setTextColor(Color.WHITE);
+            else
+                napis.setTextColor(Color.RED);
+
+            handler.postDelayed(this, 20);
+        }
+    };
 }
