@@ -15,7 +15,7 @@ public class ArrowActivity extends AppCompatActivity
 {
     private ImageButton up, down, left, right, stop, previous;
 
-    String message="NONE";
+    String message="none";
     Handler handler;
     // @SuppressLint("ClickableViewAccessibility");
     @Override
@@ -32,7 +32,7 @@ public class ArrowActivity extends AppCompatActivity
         stop = findViewById(R.id.stop);
         previous = findViewById(R.id.previous);
 
-        message = "NONE";
+        message = "none";
         handler = new Handler();
         handler.post(periodicSend);
 
@@ -45,11 +45,11 @@ public class ArrowActivity extends AppCompatActivity
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        message = "UP";
+                        message = "up";
                         return true;
 
                     case MotionEvent.ACTION_UP:
-                        message = "NONE";
+                        message = "none";
                         return true;
                 }
                 return false;
@@ -65,11 +65,11 @@ public class ArrowActivity extends AppCompatActivity
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        message = "DOWN";
+                        message = "down";
                         return true;
 
                     case MotionEvent.ACTION_UP:
-                        message = "NONE";
+                        message = "none";
                         return true;
                 }
                 return false;
@@ -84,11 +84,11 @@ public class ArrowActivity extends AppCompatActivity
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        message = "LEFT";
+                        message = "left";
                         return true;
 
                     case MotionEvent.ACTION_UP:
-                        message = "NONE";
+                        message = "none";
                         return true;
                 }
                 return false;
@@ -104,11 +104,11 @@ public class ArrowActivity extends AppCompatActivity
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        message = "RIGHT";
+                        message = "right";
                         return true;
 
                     case MotionEvent.ACTION_UP:
-                        message = "NONE";
+                        message = "none";
                         return true;
                 }
                 return false;
@@ -124,11 +124,11 @@ public class ArrowActivity extends AppCompatActivity
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        message = "STOP";
+                        message = "stop";
                         return true;
 
                     case MotionEvent.ACTION_UP:
-                        message = "NONE";
+                        message = "none";
                         return true;
                 }
                 return false;
