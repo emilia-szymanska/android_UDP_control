@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/proba"
+    android:background="@drawable/background1_1920x1080"
     android:id="@+id/arrow_view"
     tools:context=".ArrowActivity">
 

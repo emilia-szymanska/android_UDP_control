@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background1_1920x1080"
     android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="735dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -19,6 +21,7 @@
             android:layout_gravity="center_horizontal"
             android:autoLink="web"
             android:text="Set the connection"
+            android:textColor="#ffffff"
             android:textStyle="bold" />
 
         <EditText
@@ -26,45 +29,66 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="dstAddress"
-            android:text="192.168.137.231" />
+            android:text="192.168.137.231"
+            android:textColor="#ffffff" />
 
         <EditText
             android:id="@+id/port"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="dstPort"
-            android:text="20001" />
+            android:text="20001"
+            android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="waiting for connection"
+            android:textColor="#ffffff"
             android:textSize="20dp" />
 
         <TextView
             android:id="@+id/received"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#ffffff"
             android:textSize="18dp" />
 
-        <Button
-            android:id="@+id/connect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Connect" />
 
-        <Button
-            android:id="@+id/retry"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Retry connecting" />
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="bottom"
+                android:backgroundTint="#3b062c"
+                android:text="Retry connecting" />
+
+            <Button
+                android:id="@+id/connect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:backgroundTint="#3b062c"
+                android:text="Connect" />
+
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#3b062c"
             android:text="Next" />
+
     </LinearLayout>
+
 </LinearLayout>
