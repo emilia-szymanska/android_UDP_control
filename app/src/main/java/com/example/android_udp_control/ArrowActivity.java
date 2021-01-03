@@ -14,7 +14,7 @@ import android.os.Handler;
 public class ArrowActivity extends AppCompatActivity
 {
     private ImageButton up, down, left, right, stop, previous;
-    TextView napis;
+
     String message="NONE";
     Handler handler;
     // @SuppressLint("ClickableViewAccessibility");
@@ -25,7 +25,6 @@ public class ArrowActivity extends AppCompatActivity
         getSupportActionBar().hide();
         setContentView(R.layout.arrow_view);
 
-        napis = findViewById(R.id.napis);
         up = findViewById(R.id.uparrow);
         down = findViewById(R.id.downarrow);
         left = findViewById(R.id.leftarrow);
