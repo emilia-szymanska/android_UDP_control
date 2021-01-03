@@ -31,8 +31,7 @@ public class MainActivity extends AppCompatActivity
         buttonRetry = (Button) findViewById(R.id.retry);
         buttonConnect = (Button) findViewById(R.id.connect);
 
-        // change it
-        buttonNext.setEnabled(true);
+        buttonNext.setEnabled(false);
         buttonRetry.setEnabled(false);
 
         buttonNext.setOnClickListener(buttonNextOnClickListener);

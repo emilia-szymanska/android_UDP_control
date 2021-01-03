@@ -1,6 +1,5 @@
 package com.example.android_udp_control;
 
-import java.io.*;
 import java.net.*;
 
 
