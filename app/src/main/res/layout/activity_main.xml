@@ -11,9 +11,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
         android:orientation="vertical"
         android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:autoLink="web"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -88,6 +96,15 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#3b062c"
             android:text="Next" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:layout_gravity="center_horizontal"
+            android:autoLink="web"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
