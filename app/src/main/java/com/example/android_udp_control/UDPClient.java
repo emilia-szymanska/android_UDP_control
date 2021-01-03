@@ -34,9 +34,13 @@ public class UDPClient
             DatagramPacket request = new DatagramPacket(buf, buf.length, address, port);
             socket.send(request);
 
+            System.out.println("wyslal wiadomosc");
+
             byte[] buffer = new byte[512];
             DatagramPacket response = new DatagramPacket(buffer, buffer.length);
             socket.receive(response);
+
+            System.out.println("dostal wiadomosc");
 
             String rxMsg = new String(buffer, 0, response.getLength());
 

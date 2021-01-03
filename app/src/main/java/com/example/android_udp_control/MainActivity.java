@@ -76,13 +76,17 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View arg0)
                 {
+                    System.out.println("weszlo to clicka");
                     updateState("CONNECTING...");
                     buttonConnect.setEnabled(false);
+                    System.out.println("powinno cos zrobic, zaraz zrobi UDP");
 
                     udpClient = new UDPClient(
                             editTextAddress.getText().toString(),
                             Integer.parseInt(editTextPort.getText().toString()));
+                    System.out.println("zrobil UDP");
                     int state = udpClient.initConnection();
+                    System.out.println("dostal state'a");
                     buttonRetry.setEnabled(true);
                     if(state == 1)
                     {

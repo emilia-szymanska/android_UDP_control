@@ -143,7 +143,7 @@ public class ArrowActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 handler.removeCallbacks(periodicSend);
-                MainActivity.udpClient.sendCommand("Bye UDP Server");
+                MainActivity.udpClient.sendCommand("Bye UDP server");
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
             }
@@ -157,7 +157,7 @@ public class ArrowActivity extends AppCompatActivity
         {
             MainActivity.udpClient.sendCommand(message);
             System.out.println(message);
-            handler.postDelayed(this, 20);
+            handler.postDelayed(this, 50);
         }
     };
 }
