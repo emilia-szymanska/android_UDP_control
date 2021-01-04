@@ -13,8 +13,7 @@ public class UpdateTextsRunnable implements Runnable
 
     public void run()
     {
-        MainActivity.updateState(mainState);
-        MainActivity.updateInfo(mainInfo);
+        MainActivity.updateTexts(mainState, mainInfo);
     }
 }
 

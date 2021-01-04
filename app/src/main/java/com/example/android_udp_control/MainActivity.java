@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity
         //TODO: why it doesn't display like this?
         editTextPort.setText("192.168.137.231", TextView.BufferType.EDITABLE);
         editTextPort.setText("20001", TextView.BufferType.EDITABLE);
-
-
+        
     }
 
     View.OnClickListener buttonNextOnClickListener =
@@ -75,8 +74,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if (udp_thread.isAlive())
                         udp_thread.interrupt();
-                    updateState("waiting for connection");
-                    updateInfo(" ");
+                    updateTexts("waiting for connection", " ");
                     buttonConnect.setEnabled(true);
                     buttonRetry.setEnabled(false);
                     buttonNext.setEnabled(false);
@@ -92,10 +90,9 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View arg0)
                 {
-                    updateState("CONNECTING...");
-                    updateInfo(" ");
                     buttonConnect.setEnabled(false);
                     buttonRetry.setEnabled(true);
+                    updateTexts("CONNECTING...", " ");
 
                     udp_thread = new Thread()
                     {
@@ -135,56 +132,12 @@ public class MainActivity extends AppCompatActivity
                 }
             };
 
-    public static void updateState(String state)
+    public static void updateTexts(String state, String additionalInfo)
     {
+        textViewRx.setText(additionalInfo);
         textViewState.setText(state);
         textViewState.invalidate();
         textViewState.requestLayout();
     }
-
-    public static void updateInfo(String additionalInfo)
-    {
-        textViewRx.setText(additionalInfo);
-    }
-
-
-    /*
-    public Runnable udpConnectRunnable()
-    {
-        return new Runnable()
-        {
-            public void run()
-            {
-                address = editTextAddress.getText().toString();
-                port = Integer.parseInt(editTextPort.getText().toString());
-
-                udpClient = new UDPClient(address, port);
-                System.out.println("zrobil UDP");
-                state = udpClient.initConnection();
-
-
-                System.out.println("dostal state'a");
-                buttonRetry.setEnabled(true);
-                if(state == 1)
-                {
-                    updateState("CONNECTED!");
-                    updateInfo(" ");
-                    buttonNext.setEnabled(true);
-                }
-                else
-                {
-                    updateState("NOT CONNECTED");
-                    if (state == 0)
-                    {
-                        updateInfo("wrong server");
-                    }
-                    else
-                    {
-                        updateInfo("caught an exception");
-                    }
-                }
-            }
-        };
-    }*/
 
 }
