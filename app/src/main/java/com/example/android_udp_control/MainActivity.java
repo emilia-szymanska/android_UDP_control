@@ -8,20 +8,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Intent;
 
+import java.io.Serializable;
+
 
 public class MainActivity extends AppCompatActivity
 {
     EditText editTextAddress, editTextPort;
     Button buttonConnect, buttonNext, buttonRetry;
     TextView textViewState, textViewRx;
-    public static UDPClient udpClient;
+    public UDPClient udpClient;
+    String address;
+    int port, state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
+
         setContentView(R.layout.activity_main);
+
 
         editTextAddress = (EditText) findViewById(R.id.address);
         editTextPort = (EditText) findViewById(R.id.port);
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity
         editTextPort.setText("192.168.137.231", TextView.BufferType.EDITABLE);
         editTextPort.setText("20001", TextView.BufferType.EDITABLE);
 
+
     }
 
     View.OnClickListener buttonNextOnClickListener =
@@ -49,7 +56,11 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View arg0)
                 {
-                    Intent changeToArrows = new Intent(MainActivity.this, ArrowActivity.class);
+                    Intent changeToArrows = new Intent(getApplicationContext(), ArrowActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("udpAddress", address);
+                    bundle.putInt("udpPort", port);
+                    changeToArrows.putExtras(bundle);
                     startActivity(changeToArrows);
                 }
             };
@@ -79,18 +90,23 @@ public class MainActivity extends AppCompatActivity
                     System.out.println("weszlo to clicka");
                     updateState("CONNECTING...");
                     buttonConnect.setEnabled(false);
+
                     System.out.println("powinno cos zrobic, zaraz zrobi UDP");
 
-                    udpClient = new UDPClient(
-                            editTextAddress.getText().toString(),
-                            Integer.parseInt(editTextPort.getText().toString()));
+                    address = editTextAddress.getText().toString();
+                    port = Integer.parseInt(editTextPort.getText().toString());
+
+                    udpClient = new UDPClient(address, port);
                     System.out.println("zrobil UDP");
-                    int state = udpClient.initConnection();
+                    state = udpClient.initConnection();
+
+
                     System.out.println("dostal state'a");
                     buttonRetry.setEnabled(true);
                     if(state == 1)
                     {
                         updateState("CONNECTED!");
+                        updateInfo(" ");
                         buttonNext.setEnabled(true);
                     }
                     else
@@ -105,6 +121,7 @@ public class MainActivity extends AppCompatActivity
                             updateInfo("caught an exception");
                         }
                     }
+
                 }
             };
 

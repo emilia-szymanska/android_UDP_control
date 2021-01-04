@@ -1,14 +1,11 @@
 package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintSet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.graphics.Color;
 import android.os.Handler;
 
 public class ArrowActivity extends AppCompatActivity
@@ -17,6 +14,13 @@ public class ArrowActivity extends AppCompatActivity
 
     String message="none";
     Handler handler;
+    Thread thread;
+    UDPClient myUdpClient;
+    Bundle bundle;
+    Intent intent;
+    String udpAddress;
+    int updPort;
+
     // @SuppressLint("ClickableViewAccessibility");
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -24,6 +28,15 @@ public class ArrowActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.arrow_view);
+
+        intent = getIntent();
+        bundle = this.getIntent().getExtras();
+        udpAddress = bundle.getString("udpAddress");
+        updPort = bundle.getInt("udpPort");
+
+
+        myUdpClient = new UDPClient(udpAddress, updPort);
+        myUdpClient.setSocket();
 
         up = findViewById(R.id.uparrow);
         down = findViewById(R.id.downarrow);
@@ -34,7 +47,8 @@ public class ArrowActivity extends AppCompatActivity
 
         message = "none";
         handler = new Handler();
-        handler.post(periodicSend);
+        thread = new Thread(periodicSend);
+        thread.start();
 
 
         up.setOnTouchListener(new View.OnTouchListener()
@@ -142,7 +156,8 @@ public class ArrowActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 handler.removeCallbacks(periodicSend);
-                MainActivity.udpClient.sendCommand("Bye UDP server");
+                System.out.println("Hmmmmm");
+                myUdpClient.sendCommand("Bye UDP server");
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
             }
@@ -154,7 +169,7 @@ public class ArrowActivity extends AppCompatActivity
         @Override
         public void run()
         {
-            MainActivity.udpClient.sendCommand(message);
+            myUdpClient.sendCommand(message);
             System.out.println(message);
             handler.postDelayed(this, 50);
         }

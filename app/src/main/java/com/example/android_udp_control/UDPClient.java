@@ -1,5 +1,9 @@
 package com.example.android_udp_control;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.net.*;
 
 
@@ -24,7 +28,6 @@ public class UDPClient
         String rxCorrectMsg = "OK";
 
         //TODO: what to do if a port is incorrecct? - it doesn't catch an exception then
-
         try
         {
             address = InetAddress.getByName(hostname);
@@ -40,9 +43,9 @@ public class UDPClient
             DatagramPacket response = new DatagramPacket(buffer, buffer.length);
             socket.receive(response);
 
-            System.out.println("dostal wiadomosc");
-
             String rxMsg = new String(buffer, 0, response.getLength());
+
+            System.out.println(rxMsg);
 
             if (rxMsg.equals(rxCorrectMsg))
                 return 1;
@@ -57,13 +60,24 @@ public class UDPClient
         }
     }
 
-    public void sendCommand(String msg)
+    public void setSocket()
     {
         try
         {
             address = InetAddress.getByName(hostname);
             socket = new DatagramSocket();
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Caught an exception!");
+            ex.printStackTrace();
+        }
+    }
 
+    public void sendCommand(String msg)
+    {
+        try
+        {
             byte[] buf = msg.getBytes();
             DatagramPacket request = new DatagramPacket(buf, buf.length, address, port);
             socket.send(request);
