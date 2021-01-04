@@ -1,9 +1,5 @@
 package com.example.android_udp_control;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.io.Serializable;
 import java.net.*;
 
 
@@ -21,7 +17,7 @@ public class UDPClient
         port = prt;
     }
 
-    // 1 - correct connection; 0 - wrong server, -1 - exception
+    // 1 - correct connection; 0 - wrong server, -1 - exception, -2 - timeout
     public int initConnection()
     {
         String msg = "Hello UDP server";
@@ -39,26 +35,42 @@ public class UDPClient
 
             System.out.println("wyslal wiadomosc");
 
+            socket.setSoTimeout(5000);
+
             byte[] buffer = new byte[512];
-            DatagramPacket response = new DatagramPacket(buffer, buffer.length);
-            socket.receive(response);
+            try
+            {
+                DatagramPacket response = new DatagramPacket(buffer, buffer.length);
+                socket.receive(response);
+                String rxMsg = new String(buffer, 0, response.getLength());
+                System.out.println(rxMsg);
 
-            String rxMsg = new String(buffer, 0, response.getLength());
-
-            System.out.println(rxMsg);
-
-            if (rxMsg.equals(rxCorrectMsg))
-                return 1;
-            else
-                return 0;
+                if (rxMsg.equals(rxCorrectMsg))
+                    return 1;
+                else
+                    return 0;
+            }
+            catch (SocketTimeoutException ex)
+            {
+                    System.out.println("Timeout reached!!! " + ex);
+                    socket.close();
+                    return -2;
+            }
         }
         catch (Exception ex)
         {
             System.out.println("Caught an exception!");
             ex.printStackTrace();
+            socket.close();
             return -1;
         }
     }
+
+    /*public void closeSocket()
+    {
+        if (socket.isBound())
+        socket.close();
+    }*/
 
     public void setSocket()
     {

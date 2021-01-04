@@ -2,6 +2,7 @@ package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity
     Button buttonConnect, buttonNext, buttonRetry;
     TextView textViewState, textViewRx;
     public UDPClient udpClient;
+    Thread udp_thread;
     String address;
     int port, state;
 
@@ -71,13 +73,16 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View arg0)
                 {
+                    if (udp_thread.isAlive())
+                        udp_thread.interrupt();
                     updateState("waiting for connection");
+                    updateInfo(" ");
                     buttonConnect.setEnabled(true);
                     buttonRetry.setEnabled(false);
                     buttonNext.setEnabled(false);
                     editTextPort.getText().clear();
                     editTextPort.setText("192.168.000.000", TextView.BufferType.EDITABLE);
-                    editTextPort.setText("10000", TextView.BufferType.EDITABLE);
+                    editTextPort.setText("00000", TextView.BufferType.EDITABLE);
                 }
             };
 
@@ -87,40 +92,88 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View arg0)
                 {
-                    System.out.println("weszlo to clicka");
                     updateState("CONNECTING...");
+                    updateInfo(" ");
                     buttonConnect.setEnabled(false);
-
-                    System.out.println("powinno cos zrobic, zaraz zrobi UDP");
-
-                    address = editTextAddress.getText().toString();
-                    port = Integer.parseInt(editTextPort.getText().toString());
-
-                    udpClient = new UDPClient(address, port);
-                    System.out.println("zrobil UDP");
-                    state = udpClient.initConnection();
-
-
-                    System.out.println("dostal state'a");
                     buttonRetry.setEnabled(true);
-                    if(state == 1)
+
+                    udp_thread = new Thread()
                     {
-                        updateState("CONNECTED!");
-                        updateInfo(" ");
-                        buttonNext.setEnabled(true);
-                    }
-                    else
-                    {
-                        updateState("NOT CONNECTED");
-                        if (state == 0)
+                        public void run()
                         {
-                            updateInfo("wrong server");
+                            address = editTextAddress.getText().toString();
+                            port = Integer.parseInt(editTextPort.getText().toString());
+
+                            udpClient = new UDPClient(address, port);
+                            System.out.println("zrobil UDP");
+                            state = udpClient.initConnection();
+
+
+                            System.out.println("dostal state'a");
+
+                            if(state == 1)
+                            {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        updateState("CONNECTED");
+                                        updateInfo(" ");
+                                        buttonNext.setEnabled(true);
+                                    }
+                                });
+
+                                //updateState("CONNECTED!");
+                                //updateInfo(" ");
+                                //buttonNext.setEnabled(true);
+                            }
+                            else
+                            {
+                                //updateState("NOT CONNECTED");
+                                if (state == 0)
+                                {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            updateState("NOT CONNECTED");
+                                            updateInfo("wrong server");
+                                        }
+                                    });
+
+                                    //updateInfo("wrong server");
+                                }
+                                else
+                                {
+                                    if (state == -2)
+                                    {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                updateState("NOT CONNECTED");
+                                                updateInfo("timeout error");
+                                            }
+                                        });
+                                    }
+                                        //updateInfo("timeout error");
+                                    else
+                                    {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                updateState("NOT CONNECTED");
+                                                updateInfo("caught an exception");
+                                            }
+                                        });
+                                    }
+                                        //updateInfo("caught an exception");
+                                }
+                            }
                         }
-                        else
-                        {
-                            updateInfo("caught an exception");
-                        }
-                    }
+                    };
+                    udp_thread.start();
+                    udp_thread.interrupt();
+                    //Handler udpConnectHandler = new Handler();
+                    //udpConnectHandler.postDelayed(udpConnectRunnable(), 100);
+
 
                 }
             };
@@ -128,11 +181,52 @@ public class MainActivity extends AppCompatActivity
     public void updateState(String state)
     {
         textViewState.setText(state);
+        textViewState.invalidate();
+        textViewState.requestLayout();
     }
 
     public void updateInfo(String additionalInfo)
     {
         textViewRx.setText(additionalInfo);
     }
+
+    /*
+    public Runnable udpConnectRunnable()
+    {
+        return new Runnable()
+        {
+            public void run()
+            {
+                address = editTextAddress.getText().toString();
+                port = Integer.parseInt(editTextPort.getText().toString());
+
+                udpClient = new UDPClient(address, port);
+                System.out.println("zrobil UDP");
+                state = udpClient.initConnection();
+
+
+                System.out.println("dostal state'a");
+                buttonRetry.setEnabled(true);
+                if(state == 1)
+                {
+                    updateState("CONNECTED!");
+                    updateInfo(" ");
+                    buttonNext.setEnabled(true);
+                }
+                else
+                {
+                    updateState("NOT CONNECTED");
+                    if (state == 0)
+                    {
+                        updateInfo("wrong server");
+                    }
+                    else
+                    {
+                        updateInfo("caught an exception");
+                    }
+                }
+            }
+        };
+    }*/
 
 }
