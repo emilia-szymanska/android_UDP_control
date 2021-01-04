@@ -1,5 +1,6 @@
 package com.example.android_udp_control;
 
+import java.io.IOException;
 import java.net.*;
 
 
@@ -17,13 +18,12 @@ public class UDPClient
         port = prt;
     }
 
-    // 1 - correct connection; 0 - wrong server, -1 - exception, -2 - timeout
+    // 1 - correct connection; 0 - wrong server, -1 - exception, -2 - timeout, -3 - failed while waiting for a message, -4 - wrong values
     public int initConnection()
     {
         String msg = "Hello UDP server";
         String rxCorrectMsg = "OK";
 
-        //TODO: what to do if a port is incorrecct? - it doesn't catch an exception then
         try
         {
             address = InetAddress.getByName(hostname);
@@ -43,7 +43,6 @@ public class UDPClient
                 DatagramPacket response = new DatagramPacket(buffer, buffer.length);
                 socket.receive(response);
                 String rxMsg = new String(buffer, 0, response.getLength());
-                System.out.println(rxMsg);
 
                 if (rxMsg.equals(rxCorrectMsg))
                     return 1;
@@ -52,10 +51,20 @@ public class UDPClient
             }
             catch (SocketTimeoutException ex)
             {
-                    System.out.println("Timeout reached!!! " + ex);
-                    socket.close();
-                    return -2;
+                System.out.println("Timeout reached!!! " + ex);
+                socket.close();
+                return -2;
             }
+            catch (SocketException ex)
+            {
+                System.out.println("Socket exception ");
+                return -3;
+            }
+        }
+        catch(IOException ex)
+        {
+            System.out.println("Input exception");
+            return -4;
         }
         catch (Exception ex)
         {
@@ -66,11 +75,11 @@ public class UDPClient
         }
     }
 
-    /*public void closeSocket()
+    public void closeSocket()
     {
-        if (socket.isBound())
-        socket.close();
-    }*/
+        if (!socket.isClosed())
+            socket.close();
+    }
 
     public void setSocket()
     {

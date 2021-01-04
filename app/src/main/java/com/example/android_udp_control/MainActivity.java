@@ -67,13 +67,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                udpClient.closeSocket();
                 if (udp_thread.isAlive())
                     udp_thread.interrupt();
-                updateTexts("waiting for connection", " ");
                 buttonConnect.setEnabled(true);
                 buttonRetry.setEnabled(false);
                 buttonNext.setEnabled(false);
                 editTextPort.getText().clear();
+                updateTexts("waiting for connection", " ");
                 editTextPort.setText("192.168.000.000", TextView.BufferType.EDITABLE);
                 editTextPort.setText("00000", TextView.BufferType.EDITABLE);
             }
@@ -98,23 +99,26 @@ public class MainActivity extends AppCompatActivity
                         udpClient = new UDPClient(address, port);
                         state = udpClient.initConnection();
 
-                        if(state == 1)
+                        switch (state)
                         {
-                            runOnUiThread(new UpdateTextsRunnable("CONNECTED", " "));
-                        }
-                        else
-                        {
-                            if (state == 0)
-                            {
+                            case 1:
+                                runOnUiThread(new UpdateTextsRunnable("CONNECTED", " "));
+                                break;
+                            case 0:
                                 runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong server"));
-                            }
-                            else
-                            {
-                                if (state == -2)
-                                    runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "timeout error"));
-                                else
-                                    runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "caught an exception"));
-                            }
+                                break;
+                            case -2:
+                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "timeout error"));
+                                break;
+                            case -3:
+                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "disturbed socket"));
+                                break;
+                            case -4:
+                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong input values"));
+                                break;
+                            default:
+                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "caught an exception"));
+                                break;
                         }
                     }
                 };
