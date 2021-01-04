@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity
 {
     EditText editTextAddress, editTextPort;
     Button buttonConnect, buttonNext, buttonRetry;
-    TextView textViewState, textViewRx;
+    static TextView textViewState, textViewRx;
     public UDPClient udpClient;
     Thread udp_thread;
     String address;
@@ -113,82 +113,40 @@ public class MainActivity extends AppCompatActivity
 
                             if(state == 1)
                             {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        updateState("CONNECTED");
-                                        updateInfo(" ");
-                                        buttonNext.setEnabled(true);
-                                    }
-                                });
-
-                                //updateState("CONNECTED!");
-                                //updateInfo(" ");
-                                //buttonNext.setEnabled(true);
+                                runOnUiThread(new UpdateTextsRunnable("CONNECTED", " "));
                             }
                             else
                             {
-                                //updateState("NOT CONNECTED");
                                 if (state == 0)
                                 {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            updateState("NOT CONNECTED");
-                                            updateInfo("wrong server");
-                                        }
-                                    });
-
-                                    //updateInfo("wrong server");
+                                    runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong server"));
                                 }
                                 else
                                 {
                                     if (state == -2)
-                                    {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                updateState("NOT CONNECTED");
-                                                updateInfo("timeout error");
-                                            }
-                                        });
-                                    }
-                                        //updateInfo("timeout error");
+                                        runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "timeout error"));
                                     else
-                                    {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                updateState("NOT CONNECTED");
-                                                updateInfo("caught an exception");
-                                            }
-                                        });
-                                    }
-                                        //updateInfo("caught an exception");
+                                        runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "caught an exception"));
                                 }
                             }
                         }
                     };
                     udp_thread.start();
-                    udp_thread.interrupt();
-                    //Handler udpConnectHandler = new Handler();
-                    //udpConnectHandler.postDelayed(udpConnectRunnable(), 100);
-
-
                 }
             };
 
-    public void updateState(String state)
+    public static void updateState(String state)
     {
         textViewState.setText(state);
         textViewState.invalidate();
         textViewState.requestLayout();
     }
 
-    public void updateInfo(String additionalInfo)
+    public static void updateInfo(String additionalInfo)
     {
         textViewRx.setText(additionalInfo);
     }
+
 
     /*
     public Runnable udpConnectRunnable()
