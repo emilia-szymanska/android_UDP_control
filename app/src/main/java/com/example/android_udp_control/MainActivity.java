@@ -1,17 +1,13 @@
 package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Intent;
-
-import java.io.Serializable;
 
 
 public class MainActivity extends AppCompatActivity
@@ -31,12 +27,10 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().hide();
 
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        System.out.println("width: ");
-        System.out.println(width);
 
-       if (width == 1080)
+        if (width >= 1080)
            setContentView(R.layout.activity_main_fullhd);
-       else
+        else
            setContentView(R.layout.activity_main);
 
         editTextAddress = (EditText) findViewById(R.id.address);
@@ -96,38 +90,45 @@ public class MainActivity extends AppCompatActivity
                 {
                     public void run()
                     {
-                        address = editTextAddress.getText().toString();
-                        port = Integer.parseInt(editTextPort.getText().toString());
-
-                        udpClient = new UDPClient(address, port);
-                        state = udpClient.initConnection();
-
-                        switch (state)
+                        try
                         {
-                            case 1:
-                                runOnUiThread(new UpdateTextsRunnable("CONNECTED", " "));
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        buttonNext.setEnabled(true);
-                                    }
-                                });
-                                break;
-                            case 0:
-                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong server"));
-                                break;
-                            case -2:
-                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "timeout error"));
-                                break;
-                            case -3:
-                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "disturbed socket"));
-                                break;
-                            case -4:
-                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong input values"));
-                                break;
-                            default:
-                                runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "caught an exception"));
-                                break;
+                            address = editTextAddress.getText().toString();
+                            port = Integer.parseInt(editTextPort.getText().toString());
+
+                            udpClient = new UDPClient(address, port);
+                            state = udpClient.initConnection();
+
+                            switch (state)
+                            {
+                                case 1:
+                                    runOnUiThread(new UpdateTextsRunnable("CONNECTED", " "));
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            buttonNext.setEnabled(true);
+                                        }
+                                    });
+                                    break;
+                                case 0:
+                                    runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong server"));
+                                    break;
+                                case -2:
+                                    runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "timeout error"));
+                                    break;
+                                case -3:
+                                    runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "disturbed socket"));
+                                    break;
+                                case -4:
+                                    runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong input values"));
+                                    break;
+                                default:
+                                    runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "caught an exception"));
+                                    break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong input values"));
                         }
                     }
                 };

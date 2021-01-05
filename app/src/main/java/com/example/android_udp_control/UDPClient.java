@@ -76,7 +76,7 @@ public class UDPClient
 
     public void closeSocket()
     {
-        if (!socket.isClosed())
+        if (socket != null && !socket.isClosed())
             socket.close();
     }
 
