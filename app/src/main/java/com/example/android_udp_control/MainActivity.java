@@ -1,9 +1,10 @@
 package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +30,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
 
-        setContentView(R.layout.activity_main);
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        System.out.println("width: ");
+        System.out.println(width);
+
+       if (width == 1080)
+           setContentView(R.layout.activity_main_fullhd);
+       else
+           setContentView(R.layout.activity_main);
 
         editTextAddress = (EditText) findViewById(R.id.address);
         editTextPort    = (EditText) findViewById(R.id.port);
