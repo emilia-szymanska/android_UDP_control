@@ -7,6 +7,7 @@ Its ROS pipeline with simulated movements can be found [here](https://github.com
 
 Make sure that the port with which you are supposed to connect is not blocked by your computer or any other softwares.
 The code's first destination was Galaxy J5 (Android 7.1.1, screen 1280x720px). If you run the code on a screen with a different resolution, it is very important to change the source file of the background to the one with the corresponding resolution.
+If you encounter some problems (e.g. app slows down), do not hesitate do contact - any feedback and hints are welcome.
 
 Clone this repo by running:
 ```
@@ -32,4 +33,4 @@ The app contains:
 - button `NEXT` is enabled after a confirmation from the server (message "OK") and allows to change the view to the one from `arrow_view.xml`.
 
 ## Credits
-Immages used in this project were taken from Google Creative Commons.
+Images used in this project were taken from Google Creative Commons.
