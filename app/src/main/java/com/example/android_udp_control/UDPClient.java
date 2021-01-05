@@ -15,10 +15,11 @@ public class UDPClient
     {
         super();
         hostname = addr;
-        port = prt;
+        port     = prt;
     }
 
-    // 1 - correct connection; 0 - wrong server, -1 - exception, -2 - timeout, -3 - failed while waiting for a message, -4 - wrong values
+    // 1 - correct connection; 0 - wrong server, -1 - exception, -2 - timeout,
+    // -3 - failed while waiting for a message, -4 - wrong values
     public int initConnection()
     {
         String msg = "Hello UDP server";

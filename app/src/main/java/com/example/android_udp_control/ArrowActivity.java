@@ -10,18 +10,17 @@ import android.os.Handler;
 
 public class ArrowActivity extends AppCompatActivity
 {
-    private ImageButton up, down, left, right, stop, previous;
+    private ImageButton up, down, left, right, center, previous, upleftarrow, uprightarrow, downleftarrow, downrightarrow;
 
     String message="none";
     Handler handler;
-    Thread thread;
+    Thread udpThread;
     UDPClient myUdpClient;
     Bundle bundle;
     Intent intent;
     String udpAddress;
     int updPort;
 
-    // @SuppressLint("ClickableViewAccessibility");
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -29,26 +28,29 @@ public class ArrowActivity extends AppCompatActivity
         getSupportActionBar().hide();
         setContentView(R.layout.arrow_view);
 
-        intent = getIntent();
-        bundle = this.getIntent().getExtras();
-        udpAddress = bundle.getString("udpAddress");
-        updPort = bundle.getInt("udpPort");
-
+        intent      = getIntent();
+        bundle      = this.getIntent().getExtras();
+        udpAddress  = bundle.getString("udpAddress");
+        updPort     = bundle.getInt("udpPort");
 
         myUdpClient = new UDPClient(udpAddress, updPort);
         myUdpClient.setSocket();
 
-        up = findViewById(R.id.uparrow);
-        down = findViewById(R.id.downarrow);
-        left = findViewById(R.id.leftarrow);
-        right = findViewById(R.id.rightarrow);
-        stop = findViewById(R.id.stop);
-        previous = findViewById(R.id.previous);
+        up              = findViewById(R.id.uparrow);
+        down            = findViewById(R.id.downarrow);
+        left            = findViewById(R.id.leftarrow);
+        right           = findViewById(R.id.rightarrow);
+        center          = findViewById(R.id.center);
+        previous        = findViewById(R.id.previous);
+        upleftarrow     = findViewById(R.id.upleftarrow);
+        uprightarrow    = findViewById(R.id.uprightarrow);
+        downleftarrow   = findViewById(R.id.downleftarrow);
+        downrightarrow  = findViewById(R.id.downrightarrow);
 
-        message = "none";
-        handler = new Handler();
-        thread = new Thread(periodicSend);
-        thread.start();
+        message    = "none";
+        handler    = new Handler();
+        udpThread  = new Thread(periodicSend);
+        udpThread.start();
 
 
         up.setOnTouchListener(new View.OnTouchListener()
@@ -130,7 +132,7 @@ public class ArrowActivity extends AppCompatActivity
         });
 
 
-        stop.setOnTouchListener(new View.OnTouchListener()
+        center.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
             public boolean onTouch(View v, MotionEvent motionEvent)
@@ -138,7 +140,7 @@ public class ArrowActivity extends AppCompatActivity
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
-                        message = "stop";
+                        message = "center";
                         return true;
 
                     case MotionEvent.ACTION_UP:
@@ -150,18 +152,97 @@ public class ArrowActivity extends AppCompatActivity
         });
 
 
+        upleftarrow.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent motionEvent)
+            {
+                switch (motionEvent.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        message = "upleft";
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        message = "none";
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
+        uprightarrow.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent motionEvent)
+            {
+                switch (motionEvent.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        message = "upright";
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        message = "none";
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
+        downleftarrow.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent motionEvent)
+            {
+                switch (motionEvent.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        message = "downleft";
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        message = "none";
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
+        downrightarrow.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent motionEvent)
+            {
+                switch (motionEvent.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        message = "downright";
+                        return true;
+
+                    case MotionEvent.ACTION_UP:
+                        message = "none";
+                        return true;
+                }
+                return false;
+            }
+        });
+
         previous.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 handler.removeCallbacks(periodicSend);
-                System.out.println("Hmmmmm");
                 myUdpClient.sendCommand("Bye UDP server");
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
             }
         });
+
     }
 
     private Runnable periodicSend = new Runnable()

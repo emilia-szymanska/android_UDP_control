@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity
 
 
         editTextAddress = (EditText) findViewById(R.id.address);
-        editTextPort = (EditText) findViewById(R.id.port);
-        textViewState = (TextView) findViewById(R.id.state);
-        textViewRx = (TextView) findViewById(R.id.received);
-        buttonNext = (Button) findViewById(R.id.next);
-        buttonRetry = (Button) findViewById(R.id.retry);
-        buttonConnect = (Button) findViewById(R.id.connect);
+        editTextPort    = (EditText) findViewById(R.id.port);
+        textViewState   = (TextView) findViewById(R.id.state);
+        textViewRx      = (TextView) findViewById(R.id.received);
+        buttonNext      = (Button) findViewById(R.id.next);
+        buttonRetry     = (Button) findViewById(R.id.retry);
+        buttonConnect   = (Button) findViewById(R.id.connect);
 
         buttonNext.setEnabled(false);
         buttonRetry.setEnabled(false);
