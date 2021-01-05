@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                udpClient.closeSocket();
+                if (udpClient != null)
+                    udpClient.closeSocket();
                 if (udp_thread.isAlive())
                     udp_thread.interrupt();
                 buttonConnect.setEnabled(true);
