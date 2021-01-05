@@ -32,12 +32,10 @@ public class UDPClient
             byte[] buf = msg.getBytes();
             DatagramPacket request = new DatagramPacket(buf, buf.length, address, port);
             socket.send(request);
-
-            System.out.println("wyslal wiadomosc");
-
             socket.setSoTimeout(5000);
 
             byte[] buffer = new byte[512];
+
             try
             {
                 DatagramPacket response = new DatagramPacket(buffer, buffer.length);

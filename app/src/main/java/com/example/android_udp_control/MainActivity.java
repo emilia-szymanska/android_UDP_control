@@ -103,6 +103,12 @@ public class MainActivity extends AppCompatActivity
                         {
                             case 1:
                                 runOnUiThread(new UpdateTextsRunnable("CONNECTED", " "));
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        buttonNext.setEnabled(true);
+                                    }
+                                });
                                 break;
                             case 0:
                                 runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong server"));
@@ -123,6 +129,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 };
                 udp_thread.start();
+
             }
         });
 
