@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-
         editTextAddress = (EditText) findViewById(R.id.address);
         editTextPort    = (EditText) findViewById(R.id.port);
         textViewState   = (TextView) findViewById(R.id.state);
@@ -42,10 +41,6 @@ public class MainActivity extends AppCompatActivity
 
         buttonNext.setEnabled(false);
         buttonRetry.setEnabled(false);
-
-        //TODO: why it doesn't display like this?
-        editTextPort.setText("192.168.137.231", TextView.BufferType.EDITABLE);
-        editTextPort.setText("20001", TextView.BufferType.EDITABLE);
 
 
         buttonNext.setOnClickListener(new View.OnClickListener()
@@ -74,9 +69,9 @@ public class MainActivity extends AppCompatActivity
                 buttonRetry.setEnabled(false);
                 buttonNext.setEnabled(false);
                 editTextPort.getText().clear();
+                editTextPort.setText("192.168.", TextView.BufferType.EDITABLE);
+                editTextPort.setText("20001", TextView.BufferType.EDITABLE);
                 updateTexts("waiting for connection", " ");
-                editTextPort.setText("192.168.000.000", TextView.BufferType.EDITABLE);
-                editTextPort.setText("00000", TextView.BufferType.EDITABLE);
             }
         });
 
