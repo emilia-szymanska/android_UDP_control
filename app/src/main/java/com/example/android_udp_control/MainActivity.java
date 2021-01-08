@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity
     Button buttonConnect, buttonNext, buttonRetry;
     static TextView textViewState, textViewRx;
     public UDPClient udpClient;
-    Thread udp_thread;
+    Thread udpThread;
     String address;
     int port, state;
 
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity
             {
                 if (udpClient != null)
                     udpClient.closeSocket();
-                if (udp_thread.isAlive())
-                    udp_thread.interrupt();
+                if (udpThread.isAlive())
+                    udpThread.interrupt();
                 buttonConnect.setEnabled(true);
                 buttonRetry.setEnabled(false);
                 buttonNext.setEnabled(false);
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
                 buttonRetry.setEnabled(true);
                 updateTexts("CONNECTING...", " ");
 
-                udp_thread = new Thread()
+                udpThread = new Thread()
                 {
                     public void run()
                     {
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 };
-                udp_thread.start();
+                udpThread.start();
 
             }
         });

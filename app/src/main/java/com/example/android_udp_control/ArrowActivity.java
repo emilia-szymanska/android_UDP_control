@@ -14,7 +14,6 @@ public class ArrowActivity extends AppCompatActivity
     private ImageButton up, down, left, right, center, previous, upleftarrow, uprightarrow, downleftarrow, downrightarrow;
 
     String message="none";
-    Handler handler;
     Thread udpThread;
     UDPClient myUdpClient;
     Bundle bundle;
@@ -49,9 +48,6 @@ public class ArrowActivity extends AppCompatActivity
         downrightarrow  = findViewById(R.id.downrightarrow);
 
         message    = "none";
-        //handler    = new Handler();
-        //udpThread  = new Thread(periodicSend);
-        //udpThread.start();
 
         Thread udpThread = new Thread(new Runnable() {
             @Override
@@ -261,7 +257,6 @@ public class ArrowActivity extends AppCompatActivity
             {
                 if (udpThread.isAlive())
                     udpThread.interrupt();
-                //handler.removeCallbacks(periodicSend);
                 myUdpClient.sendCommand("Bye UDP server");
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
@@ -272,14 +267,4 @@ public class ArrowActivity extends AppCompatActivity
 
     }
 
-    /*private final Runnable periodicSend = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            myUdpClient.sendCommand(message);
-            System.out.println(message);
-            //handler.postDelayed(this, 50);
-        }
-    };*/
 }
