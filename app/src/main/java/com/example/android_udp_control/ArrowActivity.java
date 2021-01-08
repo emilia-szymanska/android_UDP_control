@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.os.Handler;
 
+
 public class ArrowActivity extends AppCompatActivity
 {
     private ImageButton up, down, left, right, center, previous, upleftarrow, uprightarrow, downleftarrow, downrightarrow;
@@ -48,9 +49,30 @@ public class ArrowActivity extends AppCompatActivity
         downrightarrow  = findViewById(R.id.downrightarrow);
 
         message    = "none";
-        handler    = new Handler();
-        udpThread  = new Thread(periodicSend);
-        udpThread.start();
+        //handler    = new Handler();
+        //udpThread  = new Thread(periodicSend);
+        //udpThread.start();
+
+        Thread udpThread = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                while(true)
+                {
+                    try
+                    {
+                        myUdpClient.sendCommand(message);
+                        System.out.println(message);
+                        Thread.sleep(50);
+                    }
+                    catch(Exception e)
+                    {
+                        System.out.println("Caught an exception while sleeping");
+                    }
+
+                }
+            }
+        });
 
 
         up.setOnTouchListener(new View.OnTouchListener()
@@ -229,6 +251,7 @@ public class ArrowActivity extends AppCompatActivity
                 }
                 return false;
             }
+
         });
 
         previous.setOnClickListener(new View.OnClickListener()
@@ -236,23 +259,27 @@ public class ArrowActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                handler.removeCallbacks(periodicSend);
+                if (udpThread.isAlive())
+                    udpThread.interrupt();
+                //handler.removeCallbacks(periodicSend);
                 myUdpClient.sendCommand("Bye UDP server");
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
             }
         });
 
+        udpThread.start();
+
     }
 
-    private Runnable periodicSend = new Runnable()
+    /*private final Runnable periodicSend = new Runnable()
     {
         @Override
         public void run()
         {
             myUdpClient.sendCommand(message);
             System.out.println(message);
-            handler.postDelayed(this, 50);
+            //handler.postDelayed(this, 50);
         }
-    };
+    };*/
 }
