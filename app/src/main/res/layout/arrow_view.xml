@@ -9,6 +9,28 @@
     android:paddingBottom="10dp"
     tools:context=".ArrowActivity">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:textSize="32dp"
+            android:text="hih"
+            android:textColor="#ffffff"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="hih"
+            android:textColor="#ffffff"/>
+    </LinearLayout>
+
+
+
 
     <ImageButton
         android:id="@+id/uparrow"

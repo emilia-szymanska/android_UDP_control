@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">arrow controller</string>
+    <string name="dstAddress">server address</string>
+    <string name="connection">Set the connection</string>
+    <string name="next">Next</string>
+    <string name="connectAction">Connect</string>
+    <string name="retryAction">Retry connecting</string>
+    <string name="waitMsg">waiting for connection</string>
+    <string name="hintAddr">server address</string>
+    <string name="defaultAddr">192.168.</string>
+    <string name="hintPort">server port</string>
+    <string name="defaultPort">20001</string>
 </resources>

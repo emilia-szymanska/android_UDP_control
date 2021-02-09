@@ -24,7 +24,14 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        try
+        {
+            getSupportActionBar().hide();
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Exception while hiding the action bar");
+        }
 
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
 
