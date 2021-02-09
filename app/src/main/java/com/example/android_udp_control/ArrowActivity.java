@@ -14,7 +14,6 @@ public class ArrowActivity extends AppCompatActivity
     private ImageButton up, down, left, right, center, previous, upleftarrow, uprightarrow, downleftarrow, downrightarrow;
 
     String message="none";
-    Thread udpThread;
     UDPClient myUdpClient;
     Bundle bundle;
     Intent intent;
@@ -50,6 +49,28 @@ public class ArrowActivity extends AppCompatActivity
         message    = "none";
 
         Thread udpThread = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                while(true)
+                {
+                    try
+                    {
+                        myUdpClient.sendCommand(message);
+                        System.out.println(message);
+                        Thread.sleep(50);
+                    }
+                    catch(Exception e)
+                    {
+                        System.out.println("Caught an exception while sleeping");
+                    }
+
+                }
+            }
+        });
+
+
+        Thread rxThread = new Thread(new Runnable() {
             @Override
             public void run()
             {
