@@ -7,12 +7,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.os.Handler;
+import android.widget.TextView;
 
 
 public class ArrowActivity extends AppCompatActivity
 {
     private ImageButton up, down, left, right, center, previous, upleftarrow, uprightarrow, downleftarrow, downrightarrow;
-
+    static TextView textX;
     String message="none";
     UDPClient myUdpClient;
     Bundle bundle;
@@ -46,13 +47,16 @@ public class ArrowActivity extends AppCompatActivity
         downleftarrow   = findViewById(R.id.downleftarrow);
         downrightarrow  = findViewById(R.id.downrightarrow);
 
+        textX = findViewById(R.id.x_pos);
+
         message    = "none";
 
         Thread udpThread = new Thread(new Runnable() {
+            //private volatile boolean flag = true;
             @Override
             public void run()
             {
-                while(true)
+                while(!Thread.currentThread().isInterrupted())
                 {
                     try
                     {
@@ -63,32 +67,42 @@ public class ArrowActivity extends AppCompatActivity
                     catch(Exception e)
                     {
                         System.out.println("Caught an exception while sleeping");
+                        Thread.currentThread().interrupt();
+                        //e.printStackTrace();
                     }
 
                 }
             }
+
+            /*public void stopRunning()
+            {
+                flag = false;
+            }*/
         });
 
 
         Thread rxThread = new Thread(new Runnable() {
+
             @Override
             public void run()
             {
-                while(true)
+                while(!Thread.currentThread().isInterrupted())
                 {
                     try
                     {
-                        myUdpClient.sendCommand(message);
+                        String message = myUdpClient.receiveData();
                         System.out.println(message);
-                        Thread.sleep(50);
+                        runOnUiThread(new UpdatePositionRunnable(message, " ", " "));
                     }
                     catch(Exception e)
                     {
-                        System.out.println("Caught an exception while sleeping");
+                        System.out.println("Caught an exception while receiving message");
                     }
 
                 }
             }
+
+
         });
 
 
@@ -276,8 +290,37 @@ public class ArrowActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+
                 if (udpThread.isAlive())
+                {
                     udpThread.interrupt();
+                    try
+                    {
+                        udpThread.join();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.out.println("Caught an exception while killing a thread");
+                    }
+
+                }
+
+                if (rxThread.isAlive())
+                {
+                    rxThread.interrupt();
+                    /*try
+                    {
+                        rxThread.join();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.out.println("Caught an exception while killing a thread");
+                    }*/
+
+                }
+                System.out.println("zamkniety rx");
+
+
                 myUdpClient.sendCommand("Bye UDP server");
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
@@ -285,7 +328,14 @@ public class ArrowActivity extends AppCompatActivity
         });
 
         udpThread.start();
+        rxThread.start();
+    }
 
+    public static void updatePosition(String x, String y, String theta)
+    {
+        textX.setText(x);
+        textX.invalidate();
+        textX.requestLayout();
     }
 
 }

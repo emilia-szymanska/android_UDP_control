@@ -39,7 +39,7 @@
             android:hint="@string/hintAddr"
             android:text="@string/defaultAddr"
             android:textColor="#ffffff"
-            android:inputType="number"/>
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/port"
@@ -48,7 +48,7 @@
             android:hint="@string/hintPort"
             android:text="@string/defaultPort"
             android:textColor="#ffffff"
-            android:inputType="number"/>
+            android:inputType="text"/>
 
         <TextView
             android:id="@+id/state"

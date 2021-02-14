@@ -42,7 +42,6 @@
     </LinearLayout>
 
 
-
     <ImageButton
         android:id="@+id/uparrow"
         android:layout_above="@id/center"

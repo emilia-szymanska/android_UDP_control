@@ -104,9 +104,41 @@ public class UDPClient
         }
         catch (Exception ex)
         {
-            System.out.println("Caught an exception!");
+            System.out.println("Caught an exception while sending a request!");
             ex.printStackTrace();
         }
     }
+
+    public String receiveData()
+    {
+        byte[] buf = new byte[512];
+        System.out.println("czekam");
+        try
+        {
+            DatagramPacket packet = new DatagramPacket(buf, buf.length);
+            socket.receive(packet);
+            System.out.println("dostalem");
+            InetAddress srvAddress = packet.getAddress();
+            int srvPort = packet.getPort();
+            //packet = new DatagramPacket(buf, buf.length, address, port);
+            System.out.println(srvAddress);
+            System.out.println(srvPort);
+
+            if (srvAddress.equals(address) && srvPort == port)
+            {
+                String received = new String(buf, 0, packet.getLength());
+                System.out.println(received);
+                return received;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Caught an exception while receiving a message!");
+            ex.printStackTrace();
+        }
+        return "NOK";
+
+    }
+
 
 }
