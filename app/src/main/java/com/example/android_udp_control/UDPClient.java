@@ -28,7 +28,7 @@ public class UDPClient
         try
         {
             address = InetAddress.getByName(hostname);
-            socket = new DatagramSocket();
+            socket = new DatagramSocket(20001);
 
             byte[] buf = msg.getBytes();
             DatagramPacket request = new DatagramPacket(buf, buf.length, address, port);
@@ -85,11 +85,11 @@ public class UDPClient
         try
         {
             address = InetAddress.getByName(hostname);
-            socket = new DatagramSocket();
+            socket = new DatagramSocket(20001);
         }
         catch (Exception ex)
         {
-            System.out.println("Caught an exception!");
+            System.out.println("Caught an exception while setting the socket!");
             ex.printStackTrace();
         }
     }
@@ -124,7 +124,7 @@ public class UDPClient
             System.out.println(srvAddress);
             System.out.println(srvPort);
 
-            if (srvAddress.equals(address) && srvPort == port)
+            if (srvAddress.equals(address) /*&& srvPort == port*/)
             {
                 String received = new String(buf, 0, packet.getLength());
                 System.out.println(received);

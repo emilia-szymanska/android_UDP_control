@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity
                 bundle.putString("udpAddress", address);
                 bundle.putInt("udpPort", port);
                 changeToArrows.putExtras(bundle);
+                udpClient.closeSocket();
                 startActivity(changeToArrows);
             }
         });

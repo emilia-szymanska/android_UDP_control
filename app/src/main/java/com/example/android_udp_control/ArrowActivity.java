@@ -145,6 +145,7 @@ public class ArrowActivity extends AppCompatActivity
             }
         });
 
+
         left.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -322,6 +323,7 @@ public class ArrowActivity extends AppCompatActivity
 
 
                 myUdpClient.sendCommand("Bye UDP server");
+                myUdpClient.closeSocket();
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
             }
