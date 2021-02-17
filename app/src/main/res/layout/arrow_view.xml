@@ -9,36 +9,89 @@
     android:paddingBottom="10dp"
     tools:context=".ArrowActivity">
 
-
-
-
     <LinearLayout
+        android:id="@+id/x_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/uparrow"
-        android:layout_marginBottom="20dp">
+        android:layout_above="@id/y_box"
+        android:layout_marginBottom="10dp">
 
 
         <TextView
             android:layout_width="30dp"
             android:layout_height="40dp"
             android:layout_marginTop="0dp"
-            android:textSize="30dp"
-            android:text="X:"
-            android:textColor="#ffffff"
-            android:background="@color/blackberry"/>
+            android:textSize="30sp"
+            android:text="@string/x_label"
+            android:textColor="#ffffff" />
         <TextView
             android:id="@+id/x_pos"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:textSize="30dp"
-            android:text="0.00"
+            android:textSize="30sp"
+            android:text="@string/initPosValue"
             android:textColor="#ffffff"
             android:layout_gravity="center_horizontal"
-            android:textAlignment="center"
-            android:background="@color/blackberry"/>
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/y_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/theta_box"
+        android:layout_marginBottom="10dp">
+
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="0dp"
+            android:textSize="30sp"
+            android:text="@string/y_label"
+            android:textColor="#ffffff"/>
+        <TextView
+            android:id="@+id/y_pos"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:textSize="30sp"
+            android:text="@string/initPosValue"
+            android:textColor="#ffffff"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/theta_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/uparrow"
+        android:layout_marginBottom="35dp">
+
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="0dp"
+            android:textSize="30sp"
+            android:text="@string/theta_label"
+            android:textColor="#ffffff"/>
+        <TextView
+            android:id="@+id/theta_pos"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:textSize="30sp"
+            android:text="@string/initPosValue"
+            android:textColor="#ffffff"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"/>
     </LinearLayout>
 
 

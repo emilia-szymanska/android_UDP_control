@@ -10,4 +10,8 @@
     <string name="defaultAddr">192.168.</string>
     <string name="hintPort">server port</string>
     <string name="defaultPort">20001</string>
+    <string name="initPosValue">0.000</string>
+    <string name="x_label">X: </string>
+    <string name="y_label">Y: </string>
+    <string name="theta_label"> &#x3B8: </string>
 </resources>
