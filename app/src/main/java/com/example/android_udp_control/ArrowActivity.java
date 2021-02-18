@@ -189,26 +189,6 @@ public class ArrowActivity extends AppCompatActivity
         });
 
 
-        center.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent motionEvent)
-            {
-                switch (motionEvent.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        message = "center";
-                        return true;
-
-                    case MotionEvent.ACTION_UP:
-                        message = "none";
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
         upleftarrow.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -329,6 +309,49 @@ public class ArrowActivity extends AppCompatActivity
                 myUdpClient.closeSocket();
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
+            }
+        });
+
+        center.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (udpThread.isAlive())
+                {
+                    udpThread.interrupt();
+                    try
+                    {
+                        udpThread.join();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.out.println("Caught an exception while killing a thread");
+                    }
+
+                }
+
+                if (rxThread.isAlive())
+                {
+                    rxThread.interrupt();
+                    /*try
+                    {
+                        rxThread.join();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.out.println("Caught an exception while killing a thread");
+                    }*/
+
+                }
+
+
+                myUdpClient.sendCommand("Change to desired pose view");
+                myUdpClient.closeSocket();
+                Intent changeToDesired = new Intent(getApplicationContext(), PoseCommandActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("udpAddress", udpAddress);
+                bundle.putInt("udpPort", updPort);
+                changeToDesired.putExtras(bundle);
+                startActivity(changeToDesired);
             }
         });
 
