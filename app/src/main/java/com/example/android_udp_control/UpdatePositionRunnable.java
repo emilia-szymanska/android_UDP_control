@@ -10,7 +10,7 @@ public class UpdatePositionRunnable implements Runnable
     {
         this.x_pos = x;
         this.y_pos = y;
-        this.theta_pos = theta;
+        this.theta_pos = theta + "\u00B0" ;
     }
 
     public void run()

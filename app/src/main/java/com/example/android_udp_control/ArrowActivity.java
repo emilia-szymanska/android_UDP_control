@@ -13,7 +13,7 @@ import android.widget.TextView;
 public class ArrowActivity extends AppCompatActivity
 {
     private ImageButton up, down, left, right, center, previous, upleftarrow, uprightarrow, downleftarrow, downrightarrow;
-    static TextView textX;
+    static TextView textX, textY, textTheta;
     String message="none";
     UDPClient myUdpClient;
     Bundle bundle;
@@ -48,6 +48,8 @@ public class ArrowActivity extends AppCompatActivity
         downrightarrow  = findViewById(R.id.downrightarrow);
 
         textX = findViewById(R.id.x_pos);
+        textY = findViewById(R.id.y_pos);
+        textTheta = findViewById(R.id.theta_pos);
 
         message    = "none";
 
@@ -92,7 +94,8 @@ public class ArrowActivity extends AppCompatActivity
                     {
                         String message = myUdpClient.receiveData();
                         System.out.println(message);
-                        runOnUiThread(new UpdatePositionRunnable(message, " ", " "));
+                        String[] positionArray = message.split(",");
+                        runOnUiThread(new UpdatePositionRunnable(positionArray[0], positionArray[1], positionArray[2]));
                     }
                     catch(Exception e)
                     {
@@ -336,6 +339,8 @@ public class ArrowActivity extends AppCompatActivity
     public static void updatePosition(String x, String y, String theta)
     {
         textX.setText(x);
+        textY.setText(y);
+        textTheta.setText(theta);
         textX.invalidate();
         textX.requestLayout();
     }
