@@ -43,7 +43,8 @@ tools:context=".PoseCommandActivity">
                     android:text="@string/initPosValue"
                     android:textColor="#ffffff"
                     android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
 
             <LinearLayout
@@ -67,7 +68,8 @@ tools:context=".PoseCommandActivity">
                     android:text="@string/initPosValue"
                     android:textColor="#ffffff"
                     android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
 
             <LinearLayout
@@ -90,7 +92,8 @@ tools:context=".PoseCommandActivity">
                     android:text="@string/initPosValue"
                     android:textColor="#ffffff"
                     android:layout_gravity="center_horizontal"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:inputType="number"/>
             </LinearLayout>
 
         </LinearLayout>
