@@ -2,11 +2,11 @@ package com.example.android_udp_control;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,7 +25,14 @@ public class PoseCommandActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        try
+        {
+            getSupportActionBar().hide();
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Exception while hiding the action bar");
+        }
         setContentView(R.layout.pose_command_activity);
 
         intent      = getIntent();
@@ -36,8 +43,11 @@ public class PoseCommandActivity extends AppCompatActivity
         myUdpClient = new UDPClient(udpAddress, updPort);
         myUdpClient.setSocket();
 
-        accept          = findViewById(R.id.accept);
-        previous        = findViewById(R.id.previous);
+        accept       = findViewById(R.id.accept);
+        previous     = findViewById(R.id.previous);
+        desiredX     = findViewById(R.id.desired_x);
+        desiredY     = findViewById(R.id.desired_y);
+        desiredTheta = findViewById(R.id.desired_theta);
 
         textX = findViewById(R.id.x_pos);
         textY = findViewById(R.id.y_pos);
@@ -54,10 +64,10 @@ public class PoseCommandActivity extends AppCompatActivity
                     try
                     {
                         String message = myUdpClient.receiveData();
-                        System.out.println(message);
+                        //System.out.println(message);
                         String[] positionArray = message.split(",");
-                        // change that runnable
-                        runOnUiThread(new UpdatePositionRunnable(positionArray[0], positionArray[1], positionArray[2]));
+                        // TODO: change that runnable
+                        runOnUiThread(new UpdatePositionDesiredRunnable(positionArray[0], positionArray[1], positionArray[2]));
                     }
                     catch(Exception e)
                     {
@@ -75,12 +85,18 @@ public class PoseCommandActivity extends AppCompatActivity
             @Override
             public void onClick(View w)
             {
-                // check if x, y and theta are of proper values
-                myUdpClient.sendCommand("");
+                int theta = Integer.parseInt(desiredTheta.getText().toString());
+                if(theta < -180 || theta > 180)
+                {
+                    Toast.makeText(PoseCommandActivity.this, "\u03F4 must be from range [-180, 180]", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                float x = Float.parseFloat(desiredX.getText().toString());
+                float y = Float.parseFloat(desiredY.getText().toString());
+                String command = Float.toString(x) + "," + Float.toString(y) + "," + Integer.toString(theta);
+                myUdpClient.sendCommand(command);
             }
         });
-
-
 
 
         previous.setOnClickListener(new View.OnClickListener()
@@ -88,18 +104,20 @@ public class PoseCommandActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                myUdpClient.sendCommand("Change to arrow view");
+                myUdpClient.closeSocket();
 
                 if (rxThread.isAlive())
                 {
                     rxThread.interrupt();
-                    /*try
+                    try
                     {
                         rxThread.join();
                     }
                     catch (Exception ex)
                     {
                         System.out.println("Caught an exception while killing a thread");
-                    }*/
+                    }
 
                 }
 

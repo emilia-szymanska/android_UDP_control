@@ -25,7 +25,14 @@ public class ArrowActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        try
+        {
+            getSupportActionBar().hide();
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Exception while hiding the action bar");
+        }
         setContentView(R.layout.arrow_view);
 
         intent      = getIntent();
@@ -75,11 +82,6 @@ public class ArrowActivity extends AppCompatActivity
 
                 }
             }
-
-            /*public void stopRunning()
-            {
-                flag = false;
-            }*/
         });
 
 
@@ -93,7 +95,7 @@ public class ArrowActivity extends AppCompatActivity
                     try
                     {
                         String message = myUdpClient.receiveData();
-                        System.out.println(message);
+                        //System.out.println(message);
                         String[] positionArray = message.split(",");
                         runOnUiThread(new UpdatePositionRunnable(positionArray[0], positionArray[1], positionArray[2]));
                     }
@@ -327,10 +329,13 @@ public class ArrowActivity extends AppCompatActivity
 
                 }
 
+                myUdpClient.sendCommand("Change to desired pose view");
+                myUdpClient.closeSocket();
+
                 if (rxThread.isAlive())
                 {
                     rxThread.interrupt();
-                    /*try
+                    try
                     {
                         rxThread.join();
                     }
@@ -338,19 +343,17 @@ public class ArrowActivity extends AppCompatActivity
                     {
                         System.out.println("Caught an exception while killing a thread");
                     }
-                    */
                 }
 
                 if(!rxThread.isAlive()) System.out.println("Closed rx");
                 if(!udpThread.isAlive()) System.out.println("Closed udp");
-                myUdpClient.sendCommand("Change to desired pose view");
-                myUdpClient.closeSocket();
+
                 Intent changeToDesired = new Intent(getApplicationContext(), PoseCommandActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("udpAddress", udpAddress);
                 bundle.putInt("udpPort", updPort);
                 changeToDesired.putExtras(bundle);
-                //startActivity(changeToDesired);
+                startActivity(changeToDesired);
             }
         });
 

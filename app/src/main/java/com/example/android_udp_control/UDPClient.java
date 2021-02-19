@@ -112,22 +112,20 @@ public class UDPClient
     public String receiveData()
     {
         byte[] buf = new byte[512];
-        System.out.println("czekam");
         try
         {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
-            System.out.println("dostalem");
             InetAddress srvAddress = packet.getAddress();
             int srvPort = packet.getPort();
             //packet = new DatagramPacket(buf, buf.length, address, port);
-            System.out.println(srvAddress);
-            System.out.println(srvPort);
+            //System.out.println(srvAddress);
+            //System.out.println(srvPort);
 
             if (srvAddress.equals(address) /*&& srvPort == port*/)
             {
                 String received = new String(buf, 0, packet.getLength());
-                System.out.println(received);
+                //System.out.println(received);
                 return received;
             }
         }

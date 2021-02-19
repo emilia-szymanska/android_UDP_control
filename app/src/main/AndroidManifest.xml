@@ -26,6 +26,10 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".PoseCommandActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 
 </manifest>
