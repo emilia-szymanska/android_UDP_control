@@ -70,7 +70,7 @@ public class ArrowActivity extends AppCompatActivity
                     {
                         System.out.println("Caught an exception while sleeping");
                         Thread.currentThread().interrupt();
-                        //e.printStackTrace();
+                        e.printStackTrace();
                     }
 
                 }
@@ -302,8 +302,6 @@ public class ArrowActivity extends AppCompatActivity
                     }*/
 
                 }
-                System.out.println("zamkniety rx");
-
 
                 myUdpClient.sendCommand("Bye UDP server");
                 myUdpClient.closeSocket();
@@ -339,11 +337,12 @@ public class ArrowActivity extends AppCompatActivity
                     catch (Exception ex)
                     {
                         System.out.println("Caught an exception while killing a thread");
-                    }*/
-
+                    }
+                    */
                 }
 
-
+                if(!rxThread.isAlive()) System.out.println("Closed rx");
+                if(!udpThread.isAlive()) System.out.println("Closed udp");
                 myUdpClient.sendCommand("Change to desired pose view");
                 myUdpClient.closeSocket();
                 Intent changeToDesired = new Intent(getApplicationContext(), PoseCommandActivity.class);
@@ -351,7 +350,7 @@ public class ArrowActivity extends AppCompatActivity
                 bundle.putString("udpAddress", udpAddress);
                 bundle.putInt("udpPort", updPort);
                 changeToDesired.putExtras(bundle);
-                startActivity(changeToDesired);
+                //startActivity(changeToDesired);
             }
         });
 
