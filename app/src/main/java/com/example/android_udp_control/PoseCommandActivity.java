@@ -3,6 +3,8 @@ package com.example.android_udp_control;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -10,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PoseCommandActivity extends AppCompatActivity
 {
@@ -71,7 +76,6 @@ public class PoseCommandActivity extends AppCompatActivity
                     try
                     {
                         String message = myUdpClient.receiveData();
-                        //System.out.println(message);
                         String[] positionArray = message.split(",");
                         // TODO: change that runnable
                         runOnUiThread(new UpdatePositionDesiredRunnable(positionArray[0], positionArray[1], positionArray[2]));
@@ -101,8 +105,27 @@ public class PoseCommandActivity extends AppCompatActivity
                 float x = Float.parseFloat(desiredX.getText().toString());
                 float y = Float.parseFloat(desiredY.getText().toString());
                 String command = Float.toString(x) + "," + Float.toString(y) + "," + Integer.toString(theta);
-                Thread tmpThread = new Thread(new Runnable() {
-                    //private volatile boolean flag = true;
+
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        myUdpClient.sendCommand(command);
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //UI Thread work here
+                                System.out.println("Wyslane info");
+                            }
+                        });
+                    }
+                });
+
+                /*Thread tmpThread = new Thread(new Runnable() {
                     @Override
                     public void run()
                     {
@@ -110,7 +133,7 @@ public class PoseCommandActivity extends AppCompatActivity
                     }
                 });
 
-                tmpThread.start();
+                tmpThread.start();*/
 
             }
         });

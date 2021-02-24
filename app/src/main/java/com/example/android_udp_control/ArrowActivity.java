@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.os.Handler;
 import android.widget.TextView;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class ArrowActivity extends AppCompatActivity
@@ -62,14 +66,13 @@ public class ArrowActivity extends AppCompatActivity
         downleftarrow   = findViewById(R.id.downleftarrow);
         downrightarrow  = findViewById(R.id.downrightarrow);
 
-        textX = findViewById(R.id.x_pos);
-        textY = findViewById(R.id.y_pos);
+        textX     = findViewById(R.id.x_pos);
+        textY     = findViewById(R.id.y_pos);
         textTheta = findViewById(R.id.theta_pos);
 
-        message    = "none";
+        message = "none";
 
         Thread udpThread = new Thread(new Runnable() {
-            //private volatile boolean flag = true;
             @Override
             public void run()
             {
@@ -299,9 +302,28 @@ public class ArrowActivity extends AppCompatActivity
 
                 }
 
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
 
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        myUdpClient.sendCommand("Bye UDP server");
+                        myUdpClient.closeSocket();
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //UI Thread work here
+                                System.out.println("Pozegnanie z serwerem");
+                            }
+                        });
+                    }
+                });
+
+                /*
                 Thread tempThread = new Thread(new Runnable() {
-                    //private volatile boolean flag = true;
                     @Override
                     public void run()
                     {
@@ -310,7 +332,7 @@ public class ArrowActivity extends AppCompatActivity
                     }
                 });
 
-                tempThread.start();
+                tempThread.start();*/
 
                 if (rxThread.isAlive())
                 {
@@ -323,7 +345,6 @@ public class ArrowActivity extends AppCompatActivity
                     {
                         System.out.println("Caught an exception while killing a thread");
                     }
-
                 }
 
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
@@ -335,17 +356,12 @@ public class ArrowActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-
-
                 if (udpThread.isAlive())
                 {
-                    System.out.println("przed interrupt");
                     udpThread.interrupt();
                     try
                     {
-                        System.out.println("po interrupt, przed join");
                         udpThread.join();
-                        System.out.println("po interrupt join");
                     }
                     catch (Exception ex)
                     {
@@ -354,11 +370,29 @@ public class ArrowActivity extends AppCompatActivity
 
                 }
 
-                System.out.println("Vasia");
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
 
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
 
+                        myUdpClient.sendCommand("Change to desired pose view");
+                        myUdpClient.closeSocket();
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //UI Thread work here
+                                System.out.println("Przejscie do kolejnego widoku");
+                            }
+                        });
+                    }
+                });
+
+                /*
                 Thread tmpThread = new Thread(new Runnable() {
-                    //private volatile boolean flag = true;
+
                     @Override
                     public void run()
                     {
@@ -368,20 +402,14 @@ public class ArrowActivity extends AppCompatActivity
                 });
 
                 tmpThread.start();
+                */
 
-
-                System.out.println("Piotrek");
-
-                System.out.println("przed zamknieciem rx");
                 if (rxThread.isAlive())
                 {
-                    System.out.println("przed interrupt rx");
                     rxThread.interrupt();
                     try
                     {
-                        System.out.println("przed join rx");
                         rxThread.join();
-                        System.out.println("po join rx");
                     }
                     catch (Exception ex)
                     {
@@ -413,5 +441,6 @@ public class ArrowActivity extends AppCompatActivity
         textX.invalidate();
         textX.requestLayout();
     }
+
 
 }
