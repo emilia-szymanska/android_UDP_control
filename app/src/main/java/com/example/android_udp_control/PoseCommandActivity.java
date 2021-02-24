@@ -1,6 +1,7 @@
 package com.example.android_udp_control;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -33,7 +34,13 @@ public class PoseCommandActivity extends AppCompatActivity
         {
             System.out.println("Exception while hiding the action bar");
         }
-        setContentView(R.layout.pose_command_activity);
+
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+
+        if (width >= 1080)
+            setContentView(R.layout.pose_command_activity_fullhd);
+        else
+            setContentView(R.layout.pose_command_activity);
 
         intent      = getIntent();
         bundle      = this.getIntent().getExtras();
@@ -94,7 +101,17 @@ public class PoseCommandActivity extends AppCompatActivity
                 float x = Float.parseFloat(desiredX.getText().toString());
                 float y = Float.parseFloat(desiredY.getText().toString());
                 String command = Float.toString(x) + "," + Float.toString(y) + "," + Integer.toString(theta);
-                myUdpClient.sendCommand(command);
+                Thread tmpThread = new Thread(new Runnable() {
+                    //private volatile boolean flag = true;
+                    @Override
+                    public void run()
+                    {
+                        myUdpClient.sendCommand(command);
+                    }
+                });
+
+                tmpThread.start();
+
             }
         });
 

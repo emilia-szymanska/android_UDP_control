@@ -2,6 +2,7 @@ package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,7 +34,14 @@ public class ArrowActivity extends AppCompatActivity
         {
             System.out.println("Exception while hiding the action bar");
         }
-        setContentView(R.layout.arrow_view);
+
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+
+        if (width >= 1080)
+            setContentView(R.layout.arrow_view_fullhd);
+        else
+            setContentView(R.layout.arrow_view);
+
 
         intent      = getIntent();
         bundle      = this.getIntent().getExtras();
@@ -291,22 +299,33 @@ public class ArrowActivity extends AppCompatActivity
 
                 }
 
+
+                Thread tempThread = new Thread(new Runnable() {
+                    //private volatile boolean flag = true;
+                    @Override
+                    public void run()
+                    {
+                        myUdpClient.sendCommand("Bye UDP server");
+                        myUdpClient.closeSocket();
+                    }
+                });
+
+                tempThread.start();
+
                 if (rxThread.isAlive())
                 {
                     rxThread.interrupt();
-                    /*try
+                    try
                     {
                         rxThread.join();
                     }
                     catch (Exception ex)
                     {
                         System.out.println("Caught an exception while killing a thread");
-                    }*/
+                    }
 
                 }
 
-                myUdpClient.sendCommand("Bye UDP server");
-                myUdpClient.closeSocket();
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
             }
@@ -315,12 +334,18 @@ public class ArrowActivity extends AppCompatActivity
         center.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 if (udpThread.isAlive())
                 {
+                    System.out.println("przed interrupt");
                     udpThread.interrupt();
                     try
                     {
+                        System.out.println("po interrupt, przed join");
                         udpThread.join();
+                        System.out.println("po interrupt join");
                     }
                     catch (Exception ex)
                     {
@@ -329,15 +354,34 @@ public class ArrowActivity extends AppCompatActivity
 
                 }
 
-                myUdpClient.sendCommand("Change to desired pose view");
-                myUdpClient.closeSocket();
+                System.out.println("Vasia");
 
+
+                Thread tmpThread = new Thread(new Runnable() {
+                    //private volatile boolean flag = true;
+                    @Override
+                    public void run()
+                    {
+                        myUdpClient.sendCommand("Change to desired pose view");
+                        myUdpClient.closeSocket();
+                    }
+                });
+
+                tmpThread.start();
+
+
+                System.out.println("Piotrek");
+
+                System.out.println("przed zamknieciem rx");
                 if (rxThread.isAlive())
                 {
+                    System.out.println("przed interrupt rx");
                     rxThread.interrupt();
                     try
                     {
+                        System.out.println("przed join rx");
                         rxThread.join();
+                        System.out.println("po join rx");
                     }
                     catch (Exception ex)
                     {
