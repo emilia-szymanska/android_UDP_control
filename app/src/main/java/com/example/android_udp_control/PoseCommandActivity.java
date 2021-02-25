@@ -107,7 +107,7 @@ public class PoseCommandActivity extends AppCompatActivity
                 String command = Float.toString(x) + "," + Float.toString(y) + "," + Integer.toString(theta);
 
                 ExecutorService executor = Executors.newSingleThreadExecutor();
-                Handler handler = new Handler(Looper.getMainLooper());
+                //Handler handler = new Handler(Looper.getMainLooper());
 
                 executor.execute(new Runnable() {
                     @Override
@@ -115,25 +115,15 @@ public class PoseCommandActivity extends AppCompatActivity
 
                         myUdpClient.sendCommand(command);
 
-                        handler.post(new Runnable() {
+                       /* handler.post(new Runnable() {
                             @Override
                             public void run() {
                                 //UI Thread work here
                                 System.out.println("Wyslane info");
                             }
-                        });
+                        }); */
                     }
                 });
-
-                /*Thread tmpThread = new Thread(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        myUdpClient.sendCommand(command);
-                    }
-                });
-
-                tmpThread.start();*/
 
             }
         });
@@ -144,8 +134,25 @@ public class PoseCommandActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                myUdpClient.sendCommand("Change to arrow view");
-                myUdpClient.closeSocket();
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                //Handler handler = new Handler(Looper.getMainLooper());
+
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        myUdpClient.sendCommand("Change to arrow view");
+                        myUdpClient.closeSocket();
+
+                       /* handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //UI Thread work here
+                                System.out.println("Wyslane info");
+                            }
+                        }); */
+                    }
+                });
 
                 if (rxThread.isAlive())
                 {
@@ -158,12 +165,8 @@ public class PoseCommandActivity extends AppCompatActivity
                     {
                         System.out.println("Caught an exception while killing a thread");
                     }
-
                 }
 
-
-                myUdpClient.sendCommand("Bye UDP server");
-                myUdpClient.closeSocket();
                 Intent changeToArrows = new Intent(getApplicationContext(), ArrowActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("udpAddress", udpAddress);

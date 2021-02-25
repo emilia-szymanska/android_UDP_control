@@ -1,6 +1,8 @@
 package com.example.android_udp_control;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -95,7 +97,6 @@ public class ArrowActivity extends AppCompatActivity
             }
         });
 
-
         Thread rxThread = new Thread(new Runnable() {
 
             @Override
@@ -184,6 +185,7 @@ public class ArrowActivity extends AppCompatActivity
 
         right.setOnTouchListener(new View.OnTouchListener()
         {
+
             @Override
             public boolean onTouch(View v, MotionEvent motionEvent)
             {
@@ -303,36 +305,13 @@ public class ArrowActivity extends AppCompatActivity
                 }
 
                 ExecutorService executor = Executors.newSingleThreadExecutor();
-                Handler handler = new Handler(Looper.getMainLooper());
-
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-
-                        myUdpClient.sendCommand("Bye UDP server");
-                        myUdpClient.closeSocket();
-
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //UI Thread work here
-                                System.out.println("Pozegnanie z serwerem");
-                            }
-                        });
-                    }
-                });
-
-                /*
-                Thread tempThread = new Thread(new Runnable() {
-                    @Override
-                    public void run()
-                    {
                         myUdpClient.sendCommand("Bye UDP server");
                         myUdpClient.closeSocket();
                     }
                 });
-
-                tempThread.start();*/
 
                 if (rxThread.isAlive())
                 {
@@ -371,38 +350,13 @@ public class ArrowActivity extends AppCompatActivity
                 }
 
                 ExecutorService executor = Executors.newSingleThreadExecutor();
-                Handler handler = new Handler(Looper.getMainLooper());
-
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-
-                        myUdpClient.sendCommand("Change to desired pose view");
-                        myUdpClient.closeSocket();
-
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //UI Thread work here
-                                System.out.println("Przejscie do kolejnego widoku");
-                            }
-                        });
-                    }
-                });
-
-                /*
-                Thread tmpThread = new Thread(new Runnable() {
-
-                    @Override
-                    public void run()
-                    {
                         myUdpClient.sendCommand("Change to desired pose view");
                         myUdpClient.closeSocket();
                     }
                 });
-
-                tmpThread.start();
-                */
 
                 if (rxThread.isAlive())
                 {
@@ -416,9 +370,6 @@ public class ArrowActivity extends AppCompatActivity
                         System.out.println("Caught an exception while killing a thread");
                     }
                 }
-
-                if(!rxThread.isAlive()) System.out.println("Closed rx");
-                if(!udpThread.isAlive()) System.out.println("Closed udp");
 
                 Intent changeToDesired = new Intent(getApplicationContext(), PoseCommandActivity.class);
                 Bundle bundle = new Bundle();
@@ -440,6 +391,23 @@ public class ArrowActivity extends AppCompatActivity
         textTheta.setText(theta);
         textX.invalidate();
         textX.requestLayout();
+    }
+
+
+    public static void closeThread(Thread chosenThread)
+    {
+        if (chosenThread.isAlive())
+        {
+            chosenThread.interrupt();
+            try
+            {
+                chosenThread.join();
+            }
+            catch (Exception ex)
+            {
+                System.out.println("Caught an exception while killing a thread");
+            }
+        }
     }
 
 
