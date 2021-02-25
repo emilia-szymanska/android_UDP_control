@@ -21,7 +21,7 @@ public class ArrowActivity extends AppCompatActivity
 {
     private ImageButton up, down, left, right, center, previous, upleftarrow, uprightarrow, downleftarrow, downrightarrow;
     static TextView textX, textY, textTheta;
-    String message="none";
+    String message = "none";
     UDPClient myUdpClient;
     Bundle bundle;
     Intent intent;
@@ -32,12 +32,10 @@ public class ArrowActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        try
-        {
+        try {
             getSupportActionBar().hide();
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.out.println("Exception while hiding the action bar");
         }
 
@@ -72,54 +70,38 @@ public class ArrowActivity extends AppCompatActivity
         textY     = findViewById(R.id.y_pos);
         textTheta = findViewById(R.id.theta_pos);
 
-        message = "none";
-
         Thread udpThread = new Thread(new Runnable() {
             @Override
-            public void run()
-            {
-                while(!Thread.currentThread().isInterrupted())
-                {
-                    try
-                    {
+            public void run() {
+                while(!Thread.currentThread().isInterrupted()) {
+                    try {
                         myUdpClient.sendCommand(message);
                         System.out.println(message);
                         Thread.sleep(50);
                     }
-                    catch(Exception e)
-                    {
+                    catch(Exception e) {
                         System.out.println("Caught an exception while sleeping");
                         Thread.currentThread().interrupt();
                         e.printStackTrace();
                     }
-
                 }
             }
         });
 
         Thread rxThread = new Thread(new Runnable() {
-
             @Override
-            public void run()
-            {
-                while(!Thread.currentThread().isInterrupted())
-                {
-                    try
-                    {
+            public void run() {
+                while(!Thread.currentThread().isInterrupted()) {
+                    try {
                         String message = myUdpClient.receiveData();
-                        //System.out.println(message);
                         String[] positionArray = message.split(",");
                         runOnUiThread(new UpdatePositionRunnable(positionArray[0], positionArray[1], positionArray[2]));
                     }
-                    catch(Exception e)
-                    {
+                    catch(Exception e) {
                         System.out.println("Caught an exception while receiving message");
                     }
-
                 }
             }
-
-
         });
 
 
@@ -290,19 +272,7 @@ public class ArrowActivity extends AppCompatActivity
             public void onClick(View v)
             {
 
-                if (udpThread.isAlive())
-                {
-                    udpThread.interrupt();
-                    try
-                    {
-                        udpThread.join();
-                    }
-                    catch (Exception ex)
-                    {
-                        System.out.println("Caught an exception while killing a thread");
-                    }
-
-                }
+                closeThread(udpThread);
 
                 ExecutorService executor = Executors.newSingleThreadExecutor();
                 executor.execute(new Runnable() {
@@ -313,18 +283,7 @@ public class ArrowActivity extends AppCompatActivity
                     }
                 });
 
-                if (rxThread.isAlive())
-                {
-                    rxThread.interrupt();
-                    try
-                    {
-                        rxThread.join();
-                    }
-                    catch (Exception ex)
-                    {
-                        System.out.println("Caught an exception while killing a thread");
-                    }
-                }
+                closeThread(rxThread);
 
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
                 startActivity(changeToMain);
@@ -334,20 +293,7 @@ public class ArrowActivity extends AppCompatActivity
         center.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (udpThread.isAlive())
-                {
-                    udpThread.interrupt();
-                    try
-                    {
-                        udpThread.join();
-                    }
-                    catch (Exception ex)
-                    {
-                        System.out.println("Caught an exception while killing a thread");
-                    }
-
-                }
+                closeThread(udpThread);
 
                 ExecutorService executor = Executors.newSingleThreadExecutor();
                 executor.execute(new Runnable() {
@@ -358,18 +304,8 @@ public class ArrowActivity extends AppCompatActivity
                     }
                 });
 
-                if (rxThread.isAlive())
-                {
-                    rxThread.interrupt();
-                    try
-                    {
-                        rxThread.join();
-                    }
-                    catch (Exception ex)
-                    {
-                        System.out.println("Caught an exception while killing a thread");
-                    }
-                }
+                closeThread(rxThread);
+
 
                 Intent changeToDesired = new Intent(getApplicationContext(), PoseCommandActivity.class);
                 Bundle bundle = new Bundle();
@@ -393,7 +329,6 @@ public class ArrowActivity extends AppCompatActivity
         textX.requestLayout();
     }
 
-
     public static void closeThread(Thread chosenThread)
     {
         if (chosenThread.isAlive())
@@ -409,6 +344,4 @@ public class ArrowActivity extends AppCompatActivity
             }
         }
     }
-
-
 }
