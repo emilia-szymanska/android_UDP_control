@@ -19,9 +19,12 @@ import java.util.concurrent.Executors;
 
 public class ArrowActivity extends AppCompatActivity
 {
+    String changeToAutonomousRideMsg = "Change to autonomous ride view";
+    String goodbyeMsg                = "Bye UDP server";
+    String message                   = "none";
+
     private ImageButton up, down, left, right, center, previous, upleftarrow, uprightarrow, downleftarrow, downrightarrow;
     static TextView textX, textY, textTheta;
-    String message = "none";
     UDPClient myUdpClient;
     Bundle bundle;
     Intent intent;
@@ -271,18 +274,8 @@ public class ArrowActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
                 closeThread(udpThread);
-
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        myUdpClient.sendCommand("Bye UDP server");
-                        myUdpClient.closeSocket();
-                    }
-                });
-
+                sendCommandAndCloseTheSocket(goodbyeMsg);
                 closeThread(rxThread);
 
                 Intent changeToMain = new Intent(ArrowActivity.this, MainActivity.class);
@@ -294,18 +287,8 @@ public class ArrowActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 closeThread(udpThread);
-
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        myUdpClient.sendCommand("Change to desired pose view");
-                        myUdpClient.closeSocket();
-                    }
-                });
-
+                sendCommandAndCloseTheSocket(changeToAutonomousRideMsg);
                 closeThread(rxThread);
-
 
                 Intent changeToDesired = new Intent(getApplicationContext(), PoseCommandActivity.class);
                 Bundle bundle = new Bundle();
@@ -343,5 +326,17 @@ public class ArrowActivity extends AppCompatActivity
                 System.out.println("Caught an exception while killing a thread");
             }
         }
+    }
+
+    public void sendCommandAndCloseTheSocket(String messageToSend)
+    {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                myUdpClient.sendCommand(messageToSend);
+                myUdpClient.closeSocket();
+            }
+        });
     }
 }

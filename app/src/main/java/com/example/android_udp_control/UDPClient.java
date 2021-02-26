@@ -6,6 +6,8 @@ import java.net.*;
 
 public class UDPClient
 {
+    String msg          = "Hello UDP server";
+    String rxCorrectMsg = "OK";
     String hostname;
     int port;
     DatagramSocket socket;
@@ -22,11 +24,7 @@ public class UDPClient
     // -3 - failed while waiting for a message, -4 - wrong values
     public int initConnection()
     {
-        String msg = "Hello UDP server";
-        String rxCorrectMsg = "OK";
-
-        try
-        {
+        try {
             address = InetAddress.getByName(hostname);
             socket = new DatagramSocket(20001);
 
@@ -37,8 +35,7 @@ public class UDPClient
 
             byte[] buffer = new byte[512];
 
-            try
-            {
+            try {
                 DatagramPacket response = new DatagramPacket(buffer, buffer.length);
                 socket.receive(response);
                 String rxMsg = new String(buffer, 0, response.getLength());
@@ -48,25 +45,21 @@ public class UDPClient
                 else
                     return 0;
             }
-            catch (SocketTimeoutException ex)
-            {
+            catch (SocketTimeoutException ex) {
                 System.out.println("Timeout reached!!! " + ex);
                 socket.close();
                 return -2;
             }
-            catch (SocketException ex)
-            {
+            catch (SocketException ex) {
                 System.out.println("Socket exception ");
                 return -3;
             }
         }
-        catch(IOException ex)
-        {
+        catch(IOException ex) {
             System.out.println("Input exception");
             return -4;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.out.println("Caught an exception!");
             ex.printStackTrace();
             socket.close();
@@ -82,13 +75,11 @@ public class UDPClient
 
     public void setSocket()
     {
-        try
-        {
+        try {
             address = InetAddress.getByName(hostname);
             socket = new DatagramSocket(20001);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.out.println("Caught an exception while setting the socket!");
             ex.printStackTrace();
         }
@@ -96,14 +87,12 @@ public class UDPClient
 
     public void sendCommand(String msg)
     {
-        try
-        {
+        try {
             byte[] buf = msg.getBytes();
             DatagramPacket request = new DatagramPacket(buf, buf.length, address, port);
             socket.send(request);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.out.println("Caught an exception while sending a request!");
             ex.printStackTrace();
         }
@@ -112,25 +101,17 @@ public class UDPClient
     public String receiveData()
     {
         byte[] buf = new byte[512];
-        try
-        {
+        try {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
             InetAddress srvAddress = packet.getAddress();
-            int srvPort = packet.getPort();
-            //packet = new DatagramPacket(buf, buf.length, address, port);
-            //System.out.println(srvAddress);
-            //System.out.println(srvPort);
 
-            if (srvAddress.equals(address) /*&& srvPort == port*/)
-            {
+            if (srvAddress.equals(address)) {
                 String received = new String(buf, 0, packet.getLength());
-                //System.out.println(received);
                 return received;
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.out.println("Caught an exception while receiving a message!");
             ex.printStackTrace();
         }

@@ -24,12 +24,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        try
-        {
+        try {
             getSupportActionBar().hide();
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.out.println("Exception while hiding the action bar");
         }
 
@@ -74,8 +72,17 @@ public class MainActivity extends AppCompatActivity
             {
                 if (udpClient != null)
                     udpClient.closeSocket();
-                if (udpThread.isAlive())
+
+                if (udpThread.isAlive()) {
                     udpThread.interrupt();
+                    try {
+                        udpThread.join();
+                    }
+                    catch (Exception ex) {
+                        System.out.println("Caught an exception while killing a thread");
+                    }
+                }
+
                 buttonConnect.setEnabled(true);
                 buttonRetry.setEnabled(false);
                 buttonNext.setEnabled(false);
@@ -99,13 +106,12 @@ public class MainActivity extends AppCompatActivity
                 {
                     public void run()
                     {
-                        try
-                        {
+                        try {
                             address = editTextAddress.getText().toString();
-                            port = Integer.parseInt(editTextPort.getText().toString());
+                            port    = Integer.parseInt(editTextPort.getText().toString());
 
                             udpClient = new UDPClient(address, port);
-                            state = udpClient.initConnection();
+                            state     = udpClient.initConnection();
 
                             switch (state)
                             {
@@ -135,17 +141,14 @@ public class MainActivity extends AppCompatActivity
                                     break;
                             }
                         }
-                        catch (Exception ex)
-                        {
+                        catch (Exception ex) {
                             runOnUiThread(new UpdateTextsRunnable("NOT CONNECTED", "wrong input values"));
                         }
                     }
                 };
                 udpThread.start();
-
             }
         });
-
     }
 
 

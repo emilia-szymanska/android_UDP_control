@@ -3,9 +3,8 @@ package com.example.android_udp_control;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.EditText;
@@ -18,7 +17,9 @@ import java.util.concurrent.Executors;
 
 public class PoseCommandActivity extends AppCompatActivity
 {
-    private ImageButton accept, previous;
+    String backToArrowMsg = "Change to arrow view";
+    private ImageButton previous;
+    private Button accept;
     static TextView textX, textY, textTheta;
     EditText desiredX, desiredY, desiredTheta;
     UDPClient myUdpClient;
@@ -31,12 +32,10 @@ public class PoseCommandActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        try
-        {
+        try {
             getSupportActionBar().hide();
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.out.println("Exception while hiding the action bar");
         }
 
@@ -65,30 +64,20 @@ public class PoseCommandActivity extends AppCompatActivity
         textY = findViewById(R.id.y_pos);
         textTheta = findViewById(R.id.theta_pos);
 
-
         Thread rxThread = new Thread(new Runnable() {
-
             @Override
-            public void run()
-            {
-                while(!Thread.currentThread().isInterrupted())
-                {
-                    try
-                    {
+            public void run() {
+                while(!Thread.currentThread().isInterrupted()) {
+                    try {
                         String message = myUdpClient.receiveData();
                         String[] positionArray = message.split(",");
-                        // TODO: change that runnable
                         runOnUiThread(new UpdatePositionDesiredRunnable(positionArray[0], positionArray[1], positionArray[2]));
                     }
-                    catch(Exception e)
-                    {
+                    catch(Exception e) {
                         System.out.println("Caught an exception while receiving message");
                     }
-
                 }
             }
-
-
         });
 
         accept.setOnClickListener(new View.OnClickListener()
@@ -97,75 +86,24 @@ public class PoseCommandActivity extends AppCompatActivity
             public void onClick(View w)
             {
                 int theta = Integer.parseInt(desiredTheta.getText().toString());
-                if(theta < -180 || theta > 180)
-                {
+                if(theta < -180 || theta > 180) {
                     Toast.makeText(PoseCommandActivity.this, "\u03F4 must be from range [-180, 180]", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 float x = Float.parseFloat(desiredX.getText().toString());
                 float y = Float.parseFloat(desiredY.getText().toString());
                 String command = Float.toString(x) + "," + Float.toString(y) + "," + Integer.toString(theta);
-
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                //Handler handler = new Handler(Looper.getMainLooper());
-
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        myUdpClient.sendCommand(command);
-
-                       /* handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //UI Thread work here
-                                System.out.println("Wyslane info");
-                            }
-                        }); */
-                    }
-                });
-
+                sendCommandAndCloseTheSocket(command, false);
             }
         });
-
 
         previous.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                //Handler handler = new Handler(Looper.getMainLooper());
-
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        myUdpClient.sendCommand("Change to arrow view");
-                        myUdpClient.closeSocket();
-
-                       /* handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //UI Thread work here
-                                System.out.println("Wyslane info");
-                            }
-                        }); */
-                    }
-                });
-
-                if (rxThread.isAlive())
-                {
-                    rxThread.interrupt();
-                    try
-                    {
-                        rxThread.join();
-                    }
-                    catch (Exception ex)
-                    {
-                        System.out.println("Caught an exception while killing a thread");
-                    }
-                }
+                sendCommandAndCloseTheSocket(backToArrowMsg, true);
+                closeThread(rxThread);
 
                 Intent changeToArrows = new Intent(getApplicationContext(), ArrowActivity.class);
                 Bundle bundle = new Bundle();
@@ -186,6 +124,35 @@ public class PoseCommandActivity extends AppCompatActivity
         textTheta.setText(theta);
         textX.invalidate();
         textX.requestLayout();
+    }
+
+    public static void closeThread(Thread chosenThread)
+    {
+        if (chosenThread.isAlive())
+        {
+            chosenThread.interrupt();
+            try
+            {
+                chosenThread.join();
+            }
+            catch (Exception ex)
+            {
+                System.out.println("Caught an exception while killing a thread");
+            }
+        }
+    }
+
+    public void sendCommandAndCloseTheSocket(String messageToSend, Boolean closeTheSocket)
+    {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                myUdpClient.sendCommand(messageToSend);
+                if(closeTheSocket)
+                    myUdpClient.closeSocket();
+            }
+        });
     }
 
 }
