@@ -24,7 +24,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="0dp"
             android:textSize="30sp"
-            android:text="@string/x_label"
+            android:text="@string/xLabel"
             android:textColor="#ffffff" />
         <TextView
             android:id="@+id/x_pos"
@@ -52,7 +52,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="0dp"
             android:textSize="30sp"
-            android:text="@string/y_label"
+            android:text="@string/yLabel"
             android:textColor="#ffffff"/>
         <TextView
             android:id="@+id/y_pos"
@@ -81,7 +81,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="0dp"
             android:textSize="30sp"
-            android:text="@string/theta_label"
+            android:text="@string/thetaLabel"
             android:textColor="#ffffff"/>
         <TextView
             android:id="@+id/theta_pos"

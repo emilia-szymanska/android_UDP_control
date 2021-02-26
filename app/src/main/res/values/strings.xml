@@ -12,8 +12,11 @@
     <string name="defaultPort">20001</string>
     <string name="initPosValue">0.00</string>
     <string name="initThetaValue">0</string>
-    <string name="x_label">X: </string>
-    <string name="y_label">Y: </string>
-    <string name="theta_label">&#952;</string>
+    <string name="xLabel">X: </string>
+    <string name="yLabel">Y: </string>
+    <string name="thetaLabel">&#952;:</string>
+    <string name="currentPosition">CURRENT POSITION</string>
+    <string name="desiredPosition">DESIRED POSITION</string>
+    <string name="accept">START THE RIDE</string>
 </resources>
 
