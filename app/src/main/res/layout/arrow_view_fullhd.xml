@@ -88,7 +88,7 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:textSize="30sp"
-            android:text="@string/initPosValue"
+            android:text="@string/initThetaValue"
             android:textColor="#ffffff"
             android:layout_gravity="center_horizontal"
             android:textAlignment="center"/>
